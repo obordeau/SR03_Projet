@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+<header>header</header>
+<nav>nav</nav>
+<div class="content">
+    <aside>aside</aside>
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td><span th:text="${user.lastName}"></span></td>
+                <td><span th:text="${user.firstName}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<footer>footer</footer>
+</body>
+</html>
