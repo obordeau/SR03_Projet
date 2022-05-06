@@ -6,12 +6,20 @@ import java.sql.Time;
 @Entity
 @Table(name = "message")
 public class Message {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
     private Integer user;
     private String content;
     private Time hour;
     private Integer channel;
 
     public Message(){}
+
+    public long getId() {
+        return id;
+    }
 
     public Integer getUser() {
         return user;
@@ -27,6 +35,10 @@ public class Message {
 
     public Integer getChannel() {
         return channel;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setChannel(Integer channel) {
