@@ -1,10 +1,15 @@
 package fr.utc.sr03.chat.model;
 
+import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 
+@Entity
+@Table(name = "channel")
 public class Channel {
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
     private String title;
     private String description;
     private Date date;
@@ -30,7 +35,7 @@ public class Channel {
         return hour;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
@@ -58,7 +63,7 @@ public class Channel {
         this.hour = hour;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
