@@ -21,6 +21,8 @@ public class User {
 
     private boolean admin;
 
+    private boolean active;
+
     public User(){}
 
     public long getId() {
@@ -69,5 +71,13 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
