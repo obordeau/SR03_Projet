@@ -26,19 +26,9 @@ public class LoginController {
         return "login";
     }
 
-    public boolean isValidEmail(String email) {
-        //Regular Expression
-        String regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
-        //Compile regular expression to get the pattern
-        Pattern pattern = Pattern.compile(regex);
-        //Create instance of matcher
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model) {
-        //TODO verif login
+
         System.out.println("===> mail = " + user.getMail());
         System.out.println("===> password = " + user.getPassword());
 
