@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <title>Accueil administrateur</title>
+    <meta http-equiv="Content-Type" content="text/html" charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/home_admin.css">
+</head>
+<body>
+<div id="page"></div>
+<header class="header">
+    <h1>Application</h1>
+</header>
+<nav class="nav">
+    <a href="home_admin.html">Accueil</a>
+    <a href="#">Nouvel utilisateur</a>
+    <a href="#">Utilisateurs désactivés</a>
+</nav>
+<div class="flex-container">
+    <aside class="aside">
+        <p>Aside</p>
+    </aside>
+    <main class="main">
+        <table>
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td><span th:text="${user.lastName}"></span></td>
+                <td><span th:text="${user.firstName}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<footer class="footer">
+    <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>
+</footer>
+</body>

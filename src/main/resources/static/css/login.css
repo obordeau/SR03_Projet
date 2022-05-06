@@ -2,7 +2,7 @@ body {
     background-color: #ffc857;
     flex: 1;
 }
-.container {
+.login-container {
     width: fit-content;
     height: fit-content;
     margin: 0 auto;
