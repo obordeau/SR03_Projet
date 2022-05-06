@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.regex.*;
+import java.util.*;
 
 import java.util.List;
 
@@ -24,6 +26,16 @@ public class LoginController {
         return "login";
     }
 
+    public boolean isValidEmail(String email) {
+        //Regular Expression
+        String regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+        //Compile regular expression to get the pattern
+        Pattern pattern = Pattern.compile(regex);
+        //Create instance of matcher
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model) {
         //TODO verif login
@@ -33,6 +45,6 @@ public class LoginController {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
 
-        return "user_list";
+        return "home_admin";
     }
 }
