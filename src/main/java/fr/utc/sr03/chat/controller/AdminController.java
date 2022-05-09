@@ -37,7 +37,7 @@ public class AdminController {
         System.out.println("===> last name = " + user.getLastName());
         user.setMail("");
         user.setPassword("");
-        user.setAdmin(false);
+        user.setAdmin(0);
         userRepository.save(user);
         return "user_form";
     }

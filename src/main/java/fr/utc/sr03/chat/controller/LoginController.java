@@ -28,13 +28,12 @@ public class LoginController {
 
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model) {
-
-        System.out.println("===> mail = " + user.getMail());
-        System.out.println("===> password = " + user.getPassword());
-
-        List<User> users = userRepository.findAll();
+        //TODO verif
+        List<User> users =
+                userRepository.findByMailAndPassword(user.getMail(),user.getPassword());
         model.addAttribute("users", users);
 
-        return "home_admin";
+
+        return "home_user";
     }
 }
