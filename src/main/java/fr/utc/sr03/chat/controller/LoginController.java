@@ -27,10 +27,9 @@ public class LoginController {
     }
 
     @PostMapping
-    public String postLogin(@ModelAttribute User user, Model model) {
+    public String postLogin(@ModelAttribute User userdetails, Model model) {
 
-        System.out.println("===> mail = " + user.getMail());
-        System.out.println("===> password = " + user.getPassword());
+        User user = UserRepository.getByMailAndPassword(userdetails.getMail(), userdetails.getPassword());
 
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
