@@ -17,7 +17,7 @@
 </nav>
 <div class="flex-container">
     <aside class="aside">
-        <p>admin</p>
+        <p>USER</p>
     </aside>
     <main class="main">
         <table>
@@ -28,10 +28,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
                 <td><span th:text="${user.lastName}"></span></td>
                 <td><span th:text="${user.firstName}"></span></td>
-            </tr>
             </tbody>
         </table>
     </main>

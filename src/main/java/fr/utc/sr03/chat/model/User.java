@@ -1,5 +1,7 @@
 package fr.utc.sr03.chat.model;
 
+import org.hibernate.type.descriptor.sql.TinyIntTypeDescriptor;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,7 +21,7 @@ public class User {
 
     private String password;
 
-    private boolean admin;
+    private Integer admin;
 
     private boolean active;
 
@@ -65,11 +67,11 @@ public class User {
         this.password = password;
     }
 
-    public boolean isAdmin() {
+    public Integer isAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Integer admin) {
         this.admin = admin;
     }
 
