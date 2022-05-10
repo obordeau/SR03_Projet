@@ -49,13 +49,11 @@ public class Channel {
         this.title = title;
     }
 
-    public void addUser(Integer newuser) {
+    // public void addUser(Integer newuser) {
+    //}
 
-    }
-
-    public void removeUser(Integer user) {
-
-    }
+    // public void removeUser(Integer user) {
+    //}
 
     public Date getStartDate() {
         return startDate;

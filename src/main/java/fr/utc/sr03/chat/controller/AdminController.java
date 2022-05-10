@@ -5,10 +5,7 @@ import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class AdminController {
     public String getUserList(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
-        return "user_list";
+        return "home_admin";
     }
 
     @GetMapping("users/add")
@@ -40,6 +37,16 @@ public class AdminController {
         user.setActive(0);
         user.setAdmin(1);
         userRepository.save(user);
+        List<User> userList = userRepository.findAll();
+        model.addAttribute("usersList", userList);
+        return "home_admin";
+    }
+
+    @RequestMapping ("users/delete/{userId}")
+    public String deleteUser(@PathVariable long userId, Model model) {
+        userRepository.deleteUserById(userId);
+        List<User> userList = userRepository.findAll();
+        model.addAttribute("usersList", userList);
         return "home_admin";
     }
 }

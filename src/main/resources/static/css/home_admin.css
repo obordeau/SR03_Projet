@@ -2,44 +2,44 @@
     box-sizing: border-box;
 }
 
-.header {
+header {
     padding: 60px;
     text-align: center;
     background: #2e4052;
     color: white;
 }
 
-.nav {
+nav {
     width: 100%;
     display: flex;
     background-color: #ffc857;
 }
 
-.nav a {
+nav a {
     color: black;
     padding: 14px 20px;
     text-decoration: none;
     text-align: center;
 }
 
-.nav a:hover {
+nav a:hover {
     background-color: #fff;
     color: black;
 }
 
-.main {
+main {
     flex: 70%;
     padding: 20px;
     background-color: #fff;
 }
 
-.aside {
+aside {
     flex: 30%;
     padding: 20px;
     background-color: #6a8473;
 }
 
-.footer {
+footer {
     position: absolute;
     padding: 20px;
     text-align: center;
