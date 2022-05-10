@@ -40,19 +40,19 @@ public class AdminController {
         userRepository.save(user);
         return "home_admin";
     }
-    @GetMapping("modifySelf/{id}")
-    public String getUserInformation(@PathVariable Long id, Model model)
-    {
-        User user = userRepository.getById(id);
-        System.out.println(user.getFirstName());
-        model.addAttribute("user", user);
-        return "modif_user";
-    }
-
-    @PostMapping("modifySelf")
-    public String modifyUserInformation(@ModelAttribute User user, Model model) {
-        System.out.println(user.getFirstName());
-        //user.updateUser(user.getId(), user.getFirstName());
-        return "home_admin";
-    }
+//    @GetMapping("modifySelf/{id}")
+//    public String getUserInformation(@PathVariable Long id, Model model)
+//    {
+//        User user = userRepository.getById(id);
+//        System.out.println(user.getFirstName());
+//        model.addAttribute("user", user);
+//        return "modif_user";
+//    }
+//
+//    @PostMapping("modifySelf")
+//    public String modifyUserInformation(@ModelAttribute User user, Model model) {
+//        System.out.println(user.getFirstName());
+//        //user.updateUser(user.getId(), user.getFirstName());
+//        return "home_admin";
+//    }
 }
