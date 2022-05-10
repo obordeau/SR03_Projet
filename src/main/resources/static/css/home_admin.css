@@ -37,6 +37,8 @@ aside {
     flex: 30%;
     padding: 20px;
     background-color: #6a8473;
+    text-align: center;
+    align-items: center;
 }
 
 footer {
@@ -61,6 +63,27 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
+}
+
+.button {
+    background-color: #2e4052;
+    color: white;
+    padding: 14px 20px;
+    margin: 20px;
+    border: none;
+    cursor: pointer;
+    width: auto;
+    border-radius: 12px;
+    transition-duration: 0.4s;
+    font-size: 15px;
+    font-family: normal;
+}
+
+.button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #2e4052;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 @media (max-width: 800px) {

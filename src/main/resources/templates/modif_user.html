@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <title>Accueil administrateur</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" href="/css/home_admin.css">
+</head>
+<body>
+<div id="page"></div>
+<header class="header">
+  <h1>Application</h1>
+</header>
+<nav class="nav">
+  <a href="#">Accueil</a>
+  <a href="admin/users/add">Nouvel utilisateur</a>
+  <a href="#">Utilisateurs désactivés</a>
+</nav>
+<div class="flex-container">
+  <aside class="aside">
+<!--    <h2>-->
+<!--      <span th:text="${user.lastName}"></span>-->
+<!--      <span th:text="${user.firstName}"></span>-->
+<!--    </h2>-->
+<!--    <span th:text="${user.mail}"></span>-->
+    <form action="#">
+      <input class="button" type="submit" value="Réglages" />
+    </form>
+  </aside>
+  <main>
+    <form action="#" th:action="@{/admin/modifySelf}" th:object="${user}" method="post">
+      <div class="container">
+<!--        <h1>Modifier le profil</h1>-->
+<!--        <hr>-->
+<!--        <label for="firstname">-->
+<!--          <b>Prénom</b>-->
+<!--          <input type="text" th:value="${user.firstname}" id="firstname" name="firstname" required>-->
+<!--        </label>-->
+
+        <div class="clearfix">
+          <button type="button" class="cancelbtn">Cancel</button>
+          <button type="submit" class="savebtn">Enregistrer</button>
+        </div>
+      </div>
+    </form>
+  </main>
+</div>
+<footer class="footer">
+  <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>
+</footer>
+</body>
+</html>

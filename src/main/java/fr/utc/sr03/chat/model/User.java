@@ -1,6 +1,6 @@
 package fr.utc.sr03.chat.model;
 
-import org.hibernate.type.descriptor.sql.TinyIntTypeDescriptor;
+import fr.utc.sr03.chat.dao.UserRepository;
 
 import javax.persistence.*;
 
@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY) // strategy=GenerationType.IDENTITY => obligatoire pour auto increment mysql
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // strategy=GenerationType.IDENTITY => obligatoire pour auto increment mysql
     private long id;
 
     @Column(name = "firstname")
@@ -25,7 +26,8 @@ public class User {
 
     private Integer active;
 
-    public User(){}
+    public User() {
+    }
 
     public long getId() {
         return id;
@@ -81,5 +83,9 @@ public class User {
 
     public void setActive(Integer active) {
         this.active = active;
+    }
+
+    public void updateUser(long id, String firstname) {
+        UserRepository.updateFirstname(firstname, id);
     }
 }
