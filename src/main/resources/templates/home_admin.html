@@ -7,12 +7,12 @@
 </head>
 <body>
 <div id="page"></div>
-<header class="header">
+<header>
     <h1>Application</h1>
 </header>
-<nav class="nav">
-    <a href="#">Accueil</a>
-    <a href="admin/users/add">Nouvel utilisateur</a>
+<nav>
+    <a th:href="@{/admin/users}">Accueil</a>
+    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
     <a href="#">Utilisateurs désactivés</a>
 </nav>
 <div class="flex-container">
@@ -33,18 +33,21 @@
             <tr>
                 <th>Nom</th>
                 <th>Prenom</th>
+                <th>Admin</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${usersList}">
-                <td><span th:text="${user.lastName}"></span></td>
-                <td><span th:text="${user.firstName}"></span></td>
+                <td><span th:text="${user.getFirstName()}"></span></td>
+                <td><span th:text="${user.getLastName()}"></span></td>
+                <td><span th:text="${user.isAdmin()}"></span></td>
+                <td><a th:href="@{admin/users/delete/{id}(id=${user.getId()})}">Supprimer</a></td>
             </tr>
             </tbody>
         </table>
     </main>
 </div>
-<footer class="footer">
+<footer>
     <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>
 </footer>
 </body>
