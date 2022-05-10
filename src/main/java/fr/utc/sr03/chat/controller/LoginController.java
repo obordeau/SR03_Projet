@@ -29,10 +29,13 @@ public class LoginController {
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model) {
         //TODO verif
-        List<User> users =
-                userRepository.findByMailAndPassword(user.getMail(),user.getPassword());
-        model.addAttribute("users", users);
+        User currentUser =
+                userRepository.findFirstByMailAndPassword(user.getMail(),user.getPassword());
+        model.addAttribute("user", currentUser);
 
+        if (currentUser.isAdmin() == 1) {
+            return "home_admin";
+        }
 
         return "home_user";
     }
