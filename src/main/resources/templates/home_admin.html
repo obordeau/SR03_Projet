@@ -17,7 +17,15 @@
 </nav>
 <div class="flex-container">
     <aside class="aside">
-        <p>admin</p>
+        <h2>
+            <span th:text="${user.lastName}"></span>
+            <span th:text="${user.firstName}"></span>
+        </h2>
+        <span th:text="${user.mail}"></span>
+        <form action="admin/modifySelf">
+            <input class="button" type="submit" value="Réglages" />
+        </form>
+
     </aside>
     <main class="main">
         <table>
