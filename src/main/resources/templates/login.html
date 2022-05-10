@@ -12,14 +12,14 @@
     <form action="#" th:action="@{/login}" th:object="${user}" method="post">
         <p>
             <label for="mail">
-                <span style="color: #fff;">Veuillez saisir votre adresse e-mail :</span>
+                <span style="color: #fff;">Adresse e-mail :</span>
                 <input type="text" th:field="*{mail}" />
             </label>
         </p>
 
         <p>
             <label for="password">
-                <span style="color: #fff;">Veuillez saisir votre mot de passe :</span>
+                <span style="color: #fff;">Mot de passe :</span>
                 <input type="text" th:field="*{password}" />
             </label>
         </p>

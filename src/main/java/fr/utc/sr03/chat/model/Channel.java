@@ -2,7 +2,6 @@ package fr.utc.sr03.chat.model;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Time;
 
 @Entity
 @Table(name = "channel")
@@ -12,27 +11,14 @@ public class Channel {
     private long id;
     private String title;
     private String description;
-    private Date date;
-    private Time hour;
-    private Date duration;
+    private Date startDate;
+    private Date endDate;
     private Integer owner;
 
     public Channel() {}
 
-    public Date getDate() {
-        return date;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public Date getDuration() {
-        return duration;
-    }
-
-    public Time getHour() {
-        return hour;
     }
 
     public long getId() {
@@ -47,20 +33,8 @@ public class Channel {
         return title;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setDuration(Date duration) {
-        this.duration = duration;
-    }
-
-    public void setHour(Time hour) {
-        this.hour = hour;
     }
 
     public void setId(long id) {
@@ -81,5 +55,21 @@ public class Channel {
 
     public void removeUser(Integer user) {
 
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

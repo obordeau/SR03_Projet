@@ -12,7 +12,7 @@
 </header>
 <nav class="nav">
     <a href="#">Accueil</a>
-    <a href="#">Nouvel utilisateur</a>
+    <a href="admin/users/add">Nouvel utilisateur</a>
     <a href="#">Utilisateurs désactivés</a>
 </nav>
 <div class="flex-container">
@@ -28,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
+            <tr th:each="user : ${usersList}">
                 <td><span th:text="${user.lastName}"></span></td>
                 <td><span th:text="${user.firstName}"></span></td>
             </tr>

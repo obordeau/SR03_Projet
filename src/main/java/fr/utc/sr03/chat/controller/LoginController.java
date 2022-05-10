@@ -34,6 +34,8 @@ public class LoginController {
         model.addAttribute("user", currentUser);
 
         if (currentUser.isAdmin() == 1) {
+            List<User> userList = userRepository.findAll();
+            model.addAttribute("usersList", userList);
             return "home_admin";
         }
 

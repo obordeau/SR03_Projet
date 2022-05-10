@@ -28,17 +28,18 @@ public class AdminController {
     @GetMapping("users/add")
     public String getUserForm(Model model) {
         model.addAttribute("user", new User());
-        return "user_form";
+        return "add_user";
     }
 
     @PostMapping("users/add")
     public String addUser(@ModelAttribute User user, Model model) {
-        System.out.println("===> first name = " + user.getFirstName());
-        System.out.println("===> last name = " + user.getLastName());
-        user.setMail("");
-        user.setPassword("");
-        user.setAdmin(0);
+        if (!userRepository.findByMail(user.getMail()).isEmpty()) {
+            System.out.println("Email déja affecte.");
+            return "add_user";
+        }
+        user.setActive(0);
+        user.setAdmin(1);
         userRepository.save(user);
-        return "user_form";
+        return "home_admin";
     }
 }

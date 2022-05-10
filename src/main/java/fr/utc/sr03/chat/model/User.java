@@ -23,7 +23,7 @@ public class User {
 
     private Integer admin;
 
-    private boolean active;
+    private Integer active;
 
     public User(){}
 
@@ -75,11 +75,11 @@ public class User {
         this.admin = admin;
     }
 
-    public boolean isActive() {
+    public Integer isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Integer active) {
         this.active = active;
     }
 }
