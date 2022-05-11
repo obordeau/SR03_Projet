@@ -3,7 +3,7 @@
 <head>
     <title>Users</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="/css/user_form.css">
+    <link rel="stylesheet" href="/css/add_user.css">
 </head>
 <body>
 <header>
@@ -15,9 +15,18 @@
     <a href="#">Utilisateurs désactivés</a>
 </nav>
 <div class="flex-container">
-    <aside>aside</aside>
+    <aside class="aside">
+        <h2>
+            <span th:text="${session.lastName}"></span>
+            <span th:text="${session.firstName}"></span>
+        </h2>
+        <span th:text="${session.mail}"></span>
+        <form action="admin/modifySelf">
+            <input class="button" type="submit" value="Réglages" />
+        </form>
+    </aside>
     <main>
-        <form action="#" th:action="@{/admin/users/add}" th:object="${user}" method="post">
+        <form action="#" th:action="@{/admin/users/add}" th:object="${newUser}" method="post">
             <div class="container">
                 <h1>Ajouter un utilistaeur</h1>
                 <p>Veuillez remplir ce formulaire pour créer un nouveau profil</p>
