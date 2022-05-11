@@ -24,11 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         fr.utc.sr03.chat.model.User appUser = this.userRepository.getByMail(mail);
 
         if (appUser == null) {
-            System.out.println("User not found! " + mail);
             throw new UsernameNotFoundException("User " + mail + " was not found in the database");
         }
-
-        System.out.println("Found User: " + appUser.getMail());
 
         Integer role = appUser.isAdmin();
 
@@ -44,7 +41,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserDetails userDetails = (UserDetails) new User(appUser.getMail(), //
                 appUser.getPassword(), grantList);
-
         return userDetails;
     }
 

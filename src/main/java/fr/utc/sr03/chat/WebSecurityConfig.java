@@ -34,13 +34,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/login", "/logout").permitAll();
 
-        http.authorizeRequests().antMatchers("/admin/users/add").access("hasRole('USER')");
+        http.authorizeRequests().antMatchers("/test").access("hasRole('USER')");
 
         http.authorizeRequests().antMatchers("/admin").access("hasRole('ADMIN')");
 
         http.authorizeRequests().and().formLogin()//
                 // Submit URL of login page.
                 .loginPage("/login")//
+                .defaultSuccessUrl("/login")//
                 .usernameParameter("mail")//
                 .passwordParameter("password");
     }
