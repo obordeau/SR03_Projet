@@ -1,6 +1,8 @@
 package fr.utc.sr03.chat.controller;
 
+import fr.utc.sr03.chat.dao.ChannelRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
+import fr.utc.sr03.chat.model.Channel;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import java.util.List;
 public class LoginController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ChannelRepository channelRepository;
 
     @GetMapping
     public String getLogin(Model model) {
@@ -38,6 +42,13 @@ public class LoginController {
                 model.addAttribute("users", users);
                 return "home_admin";
             } else {
+                List<Channel> channels = channelRepository.findAll();
+                List owners = new ArrayList<>();
+                for (int i = 0; i < channels.size(); i++) {
+                    owners.add(userRepository.getById((long) channels.get(i).getOwner()).getFirstName());
+                }
+                model.addAttribute("channels", channels);
+                model.addAttribute("owners", owners);
                 return "home_user";
             }
         }

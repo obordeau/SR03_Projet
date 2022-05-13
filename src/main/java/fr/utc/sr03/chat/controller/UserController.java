@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -18,46 +19,33 @@ import java.util.List;
 public class UserController {
     @Autowired
     private ChannelRepository channelRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("channels")
     public String getChannelsList(Model model) {
         List<Channel> channels = channelRepository.findAll();
+        List owners = new ArrayList<>();
+        for (int i = 0; i < channels.size(); i++) {
+            owners.add(userRepository.getById((long) channels.get(i).getOwner()).getFirstName());
+        }
         model.addAttribute("channels", channels);
+        model.addAttribute("owners", owners);
         return "home_user";
     }
 
     @GetMapping("channels/mine")
-    public String getMyChannelsList(Model model) {
-        List<Channel> channels = channelRepository.findChannelsByOwner();
+    public String getMyChannelsList(Model model, WebRequest request) {
+        List<Channel> channels = channelRepository.findChannelsByOwner((long) request.getAttribute("user.id", WebRequest.SCOPE_SESSION));
         model.addAttribute("channels", channels);
         return "home_user";
     }
 
-    @GetMapping("users/add")
-    public String getUserForm(Model model) {
-        List<Channel> channels = channelRepository.findAll();
+    /*@GetMapping("channels/invites")
+    public String getInviteChannelsList(Model model, WebRequest request) {
+        List<Channel> channels = channelRepository.findChannelsByOwner((long) request.getAttribute("user.id", WebRequest.SCOPE_SESSION));
         model.addAttribute("channels", channels);
-        return "home_user";
-    }
+        return "home_user";*/
 
-    @PostMapping("users/add")
-    public String addUser(@ModelAttribute User newUser, Model model) {
-        if (!userRepository.findByMail(newUser.getMail()).isEmpty()) {
-            System.out.println("Email déja affecte.");
-            return "add_user";
-        }
-        newUser.setActive(0);
-        newUser.setAdmin(1);
-        userRepository.save(newUser);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "home_admin";
-    }
 
-    @RequestMapping ("users/delete/{userId}")
-    public String deleteUser(@PathVariable long userId, Model model) {
-        userRepository.deleteUserById(userId);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "home_admin";
-    }
+}

@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
-    User getByMailAndPassword(String mail, String password);
-
     List<Channel> findAll();
 
     List<Channel> findChannelsByOwner(long ownerID);

@@ -9,10 +9,15 @@ public class Channel {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "description")
     private String description;
-    private Date startDate;
-    private Date endDate;
+    @Column(name = "start_date")
+    private Date start_date;
+    @Column(name = "end_date")
+    private Date end_date;
+    @Column(name = "owner")
     private Integer owner;
 
     public Channel() {}
@@ -49,25 +54,19 @@ public class Channel {
         this.title = title;
     }
 
-    // public void addUser(Integer newuser) {
-    //}
-
-    // public void removeUser(Integer user) {
-    //}
-
     public Date getStartDate() {
-        return startDate;
+        return start_date;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(Date start_date) {
+        this.start_date = start_date;
     }
 
     public Date getEndDate() {
-        return endDate;
+        return end_date;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date end_date) {
+        this.end_date = end_date;
     }
 }
