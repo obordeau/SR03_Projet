@@ -85,7 +85,4 @@ public class User {
         this.active = active;
     }
 
-    public void updateUser(long id, String firstname) {
-        UserRepository.updateFirstname(firstname, id);
-    }
 }

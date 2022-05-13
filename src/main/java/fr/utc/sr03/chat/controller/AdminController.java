@@ -51,19 +51,23 @@ public class AdminController {
         model.addAttribute("usersList", userList);
         return "home_admin";
     }
-//    @GetMapping("modifySelf/{id}")
-//    public String getUserInformation(@PathVariable Long id, Model model)
-//    {
-//        User user = userRepository.getById(id);
-//        System.out.println(user.getFirstName());
-//        model.addAttribute("user", user);
-//        return "modif_user";
-//    }
-//
-//    @PostMapping("modifySelf")
-//    public String modifyUserInformation(@ModelAttribute User user, Model model) {
-//        System.out.println(user.getFirstName());
-//        //user.updateUser(user.getId(), user.getFirstName());
-//        return "home_admin";
-//    }
+    @GetMapping("modifySelf")
+    public String getUserInformation(Model model)
+    {
+        model.addAttribute("user", new User());
+        return "modif_user";
+    }
+
+    @PostMapping("modifySelf")
+    public String modifyUserInformation(@ModelAttribute User user, Model model, WebRequest request) {
+        User currentUser = userRepository.getById((long)request.getAttribute("id", WebRequest.SCOPE_SESSION));
+        currentUser.setMail(user.getMail());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setFirstName(user.getFirstName());
+        request.setAttribute("firstName", currentUser.getFirstName(), WebRequest.SCOPE_SESSION);
+        request.setAttribute("lastName", currentUser.getLastName(), WebRequest.SCOPE_SESSION);
+        request.setAttribute("mail", currentUser.getMail(), WebRequest.SCOPE_SESSION);
+        userRepository.save(currentUser);
+        return "home_admin";
+    }
 }
