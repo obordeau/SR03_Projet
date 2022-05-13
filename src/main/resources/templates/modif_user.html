@@ -18,10 +18,10 @@
 <div class="flex-container">
     <aside class="aside">
         <h2>
-            <span th:text="${session.lastName}"></span>
-            <span th:text="${session.firstName}"></span>
+            <span th:text="${session.user.lastName}"></span>
+            <span th:text="${session.user.firstName}"></span>
         </h2>
-        <span th:text="${session.mail}"></span>
+        <span th:text="${session.user.mail}"></span>
         <form action="admin/modifySelf">
             <input class="button" type="submit" value="Réglages" />
         </form>
@@ -35,18 +35,17 @@
 
                 <label for="firstname">
                     <b>Prénom</b>
-                    <input type="text" th:value="${session.firstName}" id="firstName" name="firstName">
+                    <input type="text" th:value="${session.user.firstName}" id="firstName" name="firstName">
                 </label>
                 <label for="lastname">
                     <b>Nom</b>
-                    <input type="text" th:value="${session.lastName}" id="lastName" name="lastName">
+                    <input type="text" th:value="${session.user.lastName}" id="lastName" name="lastName">
                 </label>
                 <label for="mail">
                     <b>Mail</b>
-                    <input type="text" th:value="${session.mail}" id="mail" name="mail">
+                    <input type="text" th:value="${session.user.mail}" id="mail" name="mail">
                 </label>
                 <div class="clearfix">
-                    <button type="button" class="cancelbtn">Cancel</button>
                     <button type="submit" class="savebtn">Enregistrer</button>
                 </div>
             </div>

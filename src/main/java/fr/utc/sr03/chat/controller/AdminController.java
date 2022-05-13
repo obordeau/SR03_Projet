@@ -60,14 +60,18 @@ public class AdminController {
 
     @PostMapping("modifySelf")
     public String modifyUserInformation(@ModelAttribute User user, Model model, WebRequest request) {
-        User currentUser = userRepository.getById((long)request.getAttribute("id", WebRequest.SCOPE_SESSION));
+        User currentUser = (User)request.getAttribute("user", WebRequest.SCOPE_SESSION);
         currentUser.setMail(user.getMail());
         currentUser.setLastName(user.getLastName());
         currentUser.setFirstName(user.getFirstName());
-        request.setAttribute("firstName", currentUser.getFirstName(), WebRequest.SCOPE_SESSION);
-        request.setAttribute("lastName", currentUser.getLastName(), WebRequest.SCOPE_SESSION);
-        request.setAttribute("mail", currentUser.getMail(), WebRequest.SCOPE_SESSION);
+        request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
         userRepository.save(currentUser);
         return "home_admin";
+    }
+
+    @GetMapping("deconnect")
+    public String deconnexion(WebRequest request)
+    {
+        return "modif_user";
     }
 }

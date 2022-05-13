@@ -15,7 +15,6 @@ import java.util.*;
 import java.util.List;
 
 @Controller
-@SessionAttributes("user")
 @RequestMapping("login")
 public class LoginController {
     @Autowired
@@ -33,13 +32,8 @@ public class LoginController {
         User currentUser =
                 userRepository.getByMailAndPassword(user.getMail(),user.getPassword());
         if (currentUser != null) {
+            request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
             request.setAttribute("connected", true, WebRequest.SCOPE_SESSION);
-            request.setAttribute("firstName", currentUser.getFirstName(), WebRequest.SCOPE_SESSION);
-            request.setAttribute("lastName", currentUser.getLastName(), WebRequest.SCOPE_SESSION);
-            request.setAttribute("mail", currentUser.getMail(), WebRequest.SCOPE_SESSION);
-            request.setAttribute("id", currentUser.getId(), WebRequest.SCOPE_SESSION);
-            request.setAttribute("admin", currentUser.isAdmin(), WebRequest.SCOPE_SESSION);
-            request.setAttribute("active", currentUser.isActive(), WebRequest.SCOPE_SESSION);
             if (currentUser.isAdmin() == 1) {
                 List<User> userList = userRepository.findAll();
                 model.addAttribute("usersList", userList);

@@ -18,12 +18,15 @@
 <div class="flex-container">
     <aside class="aside">
         <h2>
-            <span th:text="${session.lastName}"></span>
-            <span th:text="${session.firstName}"></span>
+            <span th:text="${session.user.lastName}"></span>
+            <span th:text="${session.user.firstName}"></span>
         </h2>
-        <span th:text="${session.mail}"></span>
-        <form action="admin/modifySelf">
+        <span th:text="${session.user.mail}"></span>
+        <form th:action="@{/admin/modifySelf}">
             <input class="button" type="submit" value="Réglages" />
+        </form>
+        <form th:action="@{/admin/deconnect}">
+            <input class="button" type="submit" value="Déconnexion" />
         </form>
     </aside>
     <main class="main">
