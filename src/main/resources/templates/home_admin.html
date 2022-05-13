@@ -40,7 +40,7 @@
                 <td><span th:text="${user.getFirstName()}"></span></td>
                 <td><span th:text="${user.getLastName()}"></span></td>
                 <td><span th:text="${user.isAdmin()}"></span></td>
-                <td><a th:href="@{admin/users/delete/{id}(id=${user.getId()})}">Supprimer</a></td>
+                <td><a th:href="@{/wadmin/users/delete/{id}(id=${user.getId()})}">Supprimer</a></td>
             </tr>
             </tbody>
         </table>
