@@ -21,10 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     int deleteUserById(long id);
 
-//    @Modifying(clearAutomatically = true)
-//    @Query("update users u set u.firstname = ?1 where u.id = ?2")
-//    public int setFirstname(String firstName, long id);
-
     User getById(Long id);
 
     User getByMail(String mail);

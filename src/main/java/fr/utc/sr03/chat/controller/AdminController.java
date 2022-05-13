@@ -33,7 +33,9 @@ public class AdminController {
 
     @GetMapping("users/add")
     public String getUserForm(Model model) {
+        model.addAttribute("currentUser", new User());
         model.addAttribute("newUser", new User());
+        model.addAttribute("path", "add");
         return "add_user";
     }
 
@@ -43,8 +45,7 @@ public class AdminController {
             System.out.println("Email déja affecte.");
             return "add_user";
         }
-        newUser.setActive(0);
-        newUser.setAdmin(1);
+        newUser.setActive(1);
         userRepository.save(newUser);
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
@@ -54,6 +55,42 @@ public class AdminController {
     @RequestMapping ("users/delete/{userId}")
     public String deleteUser(@PathVariable long userId, Model model) {
         userRepository.deleteUserById(userId);
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+        return "home_admin";
+    }
+
+    @RequestMapping ("users/active/{userId}")
+    public String activeUser(@PathVariable long userId, Model model) {
+        User currentUser = userRepository.getById(userId);
+        if (currentUser.isActive() == 1) {
+            currentUser.setActive(0);
+        } else {
+            currentUser.setActive(1);
+        }
+        userRepository.save(currentUser);
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+        return "home_admin";
+    }
+
+    @RequestMapping ("users/modify/{userId}")
+    public String getUser(@PathVariable long userId, Model model) {
+        User currentUser = userRepository.getById(userId);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("newUser", new User());
+        model.addAttribute("path", userId);
+        return "add_user";
+    }
+
+    @PostMapping ("users/modify/{userId}")
+    public String modifyUser(@PathVariable long userId, @ModelAttribute User newUser, Model model) {
+        User currentUser = userRepository.getById(userId);
+        currentUser.setMail(newUser.getMail());
+        currentUser.setLastName(newUser.getLastName());
+        currentUser.setFirstName(newUser.getFirstName());
+        currentUser.setPassword(newUser.getPassword());
+        userRepository.save(currentUser);
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "home_admin";

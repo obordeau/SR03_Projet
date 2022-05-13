@@ -29,7 +29,7 @@
         </form>
     </aside>
     <main>
-        <form action="#" th:action="@{/admin/users/add}" th:object="${newUser}" method="post">
+        <form action="#" th:action="${path}" th:object="${newUser}" method="post">
             <div class="container">
                 <h1>Ajouter un utilistaeur</h1>
                 <p>Veuillez remplir ce formulaire pour créer un nouveau profil</p>
@@ -37,23 +37,26 @@
 
                 <label for="firstname">
                     <b>Prénom</b>
-                    <input type="text" th:field="*{firstName}" required>
+                    <input type="text" th:value="${currentUser.firstName}" id="firstName" name="firstName" required>
                 </label>
 
                 <label for="lastname">
                     <b>Nom de famille</b>
-                    <input type="text" th:field="*{lastName}" required>
+                    <input type="text" th:value="${currentUser.lastName}" id="lastName" name="lastName" required>
                 </label>
 
                 <label for="mail">
                     <b>Mail</b>
-                    <input type="text" th:field="*{mail}" required>
+                    <input type="text" th:value="${currentUser.mail}" id="mail" name="mail" required>
                 </label>
 
                 <label for="password">
                     <b>Mot de passe</b>
-                    <input type="text" th:field="*{password}" required>
+                    <input type="text" th:value="${currentUser.password}" id="password" name="password" required>
                 </label>
+                <input type="checkbox" id="admin" name="admin" value="1">
+                <input type="hidden" id="adminhidden" name="admin" value="0">
+                <label for="admin">Administrateur ?</label>
 
                 <div class="clearfix">
                     <button type="button" class="cancelbtn">Cancel</button>
