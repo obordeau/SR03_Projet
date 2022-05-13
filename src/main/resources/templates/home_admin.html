@@ -18,14 +18,13 @@
 <div class="flex-container">
     <aside class="aside">
         <h2>
-            <span th:text="${user.lastName}"></span>
-            <span th:text="${user.firstName}"></span>
+            <span th:text="${session.lastName}"></span>
+            <span th:text="${session.firstName}"></span>
         </h2>
-        <span th:text="${user.mail}"></span>
+        <span th:text="${session.mail}"></span>
         <form action="admin/modifySelf">
             <input class="button" type="submit" value="Réglages" />
         </form>
-
     </aside>
     <main class="main">
         <table>

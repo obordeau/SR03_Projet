@@ -3,38 +3,33 @@
 <head>
     <title>Accueil administrateur</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="/css/home_admin.css">
+    <link rel="stylesheet" href="/css/home_user.css">
 </head>
 <body>
 <div id="page"></div>
-<header class="header">
+<header>
     <h1>Application</h1>
 </header>
-<nav class="nav">
-    <a href="#">Accueil</a>
-    <a href="#">Nouvel utilisateur</a>
+<nav>
+    <a th:href="@{/admin/users}">Accueil</a>
+    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
     <a href="#">Utilisateurs désactivés</a>
 </nav>
 <div class="flex-container">
     <aside class="aside">
-        <p>USER</p>
+        <h2>
+            <span th:text="${session.lastName}"></span>
+            <span th:text="${session.firstName}"></span>
+        </h2>
+        <span th:text="${session.mail}"></span>
+        <form action="admin/modifySelf">
+            <input class="button" type="submit" value="Réglages" />
+        </form>
     </aside>
     <main class="main">
-        <table>
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prenom</th>
-            </tr>
-            </thead>
-            <tbody>
-                <td><span th:text="${user.lastName}"></span></td>
-                <td><span th:text="${user.firstName}"></span></td>
-            </tbody>
-        </table>
     </main>
 </div>
-<footer class="footer">
+<footer>
     <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>
 </footer>
 </body>
