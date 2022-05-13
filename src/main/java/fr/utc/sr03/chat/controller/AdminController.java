@@ -24,6 +24,13 @@ public class AdminController {
         return "home_admin";
     }
 
+    @GetMapping("users/desactivated")
+    public String getDesactivatedUsers(Model model) {
+        List<User> users = userRepository.findUsersByActiveIs(0);
+        model.addAttribute("users", users);
+        return "home_admin";
+    }
+
     @GetMapping("users/add")
     public String getUserForm(Model model) {
         model.addAttribute("newUser", new User());
@@ -39,16 +46,16 @@ public class AdminController {
         newUser.setActive(0);
         newUser.setAdmin(1);
         userRepository.save(newUser);
-        List<User> userList = userRepository.findAll();
-        model.addAttribute("usersList", userList);
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
         return "home_admin";
     }
 
     @RequestMapping ("users/delete/{userId}")
     public String deleteUser(@PathVariable long userId, Model model) {
         userRepository.deleteUserById(userId);
-        List<User> userList = userRepository.findAll();
-        model.addAttribute("usersList", userList);
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
         return "home_admin";
     }
     @GetMapping("modifySelf")

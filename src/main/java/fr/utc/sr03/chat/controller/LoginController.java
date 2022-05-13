@@ -27,16 +27,15 @@ public class LoginController {
     }
 
     @PostMapping
-    public String postLogin(@ModelAttribute("user") User user, BindingResult result, Model model, WebRequest request) {
-        //TODO verif
-        User currentUser =
-                userRepository.getByMailAndPassword(user.getMail(),user.getPassword());
+    public String postLogin(@ModelAttribute("user") User user, Model model, WebRequest request) {
+        // TODO verif
+        User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
         if (currentUser != null) {
             request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
             request.setAttribute("connected", true, WebRequest.SCOPE_SESSION);
             if (currentUser.isAdmin() == 1) {
-                List<User> userList = userRepository.findAll();
-                model.addAttribute("usersList", userList);
+                List<User> users = userRepository.findAll();
+                model.addAttribute("users", users);
                 return "home_admin";
             } else {
                 return "home_user";

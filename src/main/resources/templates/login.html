@@ -9,7 +9,7 @@
 <body>
 <div class="login-container">
     <h2 style="color: #fff;">Authentification requise</h2>
-    <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+    <form th:action="@{/login}" th:object="${user}" method="post">
         <p>
             <label for="mail">
                 <span style="color: #fff;">Adresse e-mail :</span>
