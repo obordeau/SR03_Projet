@@ -58,19 +58,27 @@ public class AdminController {
         model.addAttribute("users", users);
         return "home_admin";
     }
-//    @GetMapping("modifySelf/{id}")
-//    public String getUserInformation(@PathVariable Long id, Model model)
-//    {
-//        User user = userRepository.getById(id);
-//        System.out.println(user.getFirstName());
-//        model.addAttribute("user", user);
-//        return "modif_user";
-//    }
-//
-//    @PostMapping("modifySelf")
-//    public String modifyUserInformation(@ModelAttribute User user, Model model) {
-//        System.out.println(user.getFirstName());
-//        //user.updateUser(user.getId(), user.getFirstName());
-//        return "home_admin";
-//    }
+    @GetMapping("modifySelf")
+    public String getUserInformation(Model model)
+    {
+        model.addAttribute("user", new User());
+        return "modif_user";
+    }
+
+    @PostMapping("modifySelf")
+    public String modifyUserInformation(@ModelAttribute User user, Model model, WebRequest request) {
+        User currentUser = (User)request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        currentUser.setMail(user.getMail());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setFirstName(user.getFirstName());
+        request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
+        userRepository.save(currentUser);
+        return "home_admin";
+    }
+
+    @GetMapping("deconnect")
+    public String deconnexion(WebRequest request)
+    {
+        return "modif_user";
+    }
 }
