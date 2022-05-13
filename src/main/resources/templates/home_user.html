@@ -11,9 +11,9 @@
     <h1>Application</h1>
 </header>
 <nav>
-    <a th:href="@{/admin/users}">Accueil</a>
-    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
-    <a href="#">Utilisateurs désactivés</a>
+    <a th:href="@{/user/chats}">Accueil</a>
+    <a th:href="@{/user/chats/mine}">Mes chats</a>
+    <a th:href="@{/user/chats/invites}">Mes invitations</a>
 </nav>
 <div class="flex-container">
     <aside class="aside">
@@ -26,7 +26,24 @@
             <input class="button" type="submit" value="Réglages" />
         </form>
     </aside>
-    <main class="main">
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Propriétaire</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="channel : ${channels}">
+                <td><span th:text="${channel.getTitle()()}"></span></td>
+                <td><span th:text="${channel.getDescription()}"></span></td>
+                <td><span th:text="${channel.getOwner()}"></span></td>
+                <td><a th:href="@{/user/chats/delete/{id}(id=${user.getId()})}">Supprimer</a></td>
+            </tr>
+            </tbody>
+        </table>
     </main>
 </div>
 <footer>
