@@ -10,9 +10,9 @@
     <h1>Application</h1>
 </header>
 <nav class="nav">
-    <a href="#">Accueil</a>
-    <a href="#">Nouvel utilisateur</a>
-    <a href="#">Utilisateurs désactivés</a>
+    <a th:href="@{/admin/users}">Accueil</a>
+    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
+    <a th:href="@{/admin/users/desactivated}">Utilisateurs désactivés</a>
 </nav>
 <div class="flex-container">
     <aside class="aside">

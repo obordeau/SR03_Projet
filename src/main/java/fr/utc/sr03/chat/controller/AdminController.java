@@ -24,6 +24,13 @@ public class AdminController {
         return "home_admin";
     }
 
+    @GetMapping("users/desactivated")
+    public String getDesactivatedUsers(Model model) {
+        List<User> users = userRepository.findUsersByActiveIs(0);
+        model.addAttribute("users", users);
+        return "home_admin";
+    }
+
     @GetMapping("users/add")
     public String getUserForm(Model model) {
         model.addAttribute("newUser", new User());

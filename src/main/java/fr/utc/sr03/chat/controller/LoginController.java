@@ -41,8 +41,8 @@ public class LoginController {
             request.setAttribute("admin", currentUser.isAdmin(), WebRequest.SCOPE_SESSION);
             request.setAttribute("active", currentUser.isActive(), WebRequest.SCOPE_SESSION);
             if (currentUser.isAdmin() == 1) {
-                List<User> userList = userRepository.findAll();
-                model.addAttribute("usersList", userList);
+                List<User> users = userRepository.findAll();
+                model.addAttribute("users", users);
                 return "home_admin";
             } else {
                 return "home_user";
