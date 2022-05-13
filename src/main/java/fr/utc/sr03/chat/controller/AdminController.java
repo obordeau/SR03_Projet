@@ -73,12 +73,16 @@ public class AdminController {
         currentUser.setFirstName(user.getFirstName());
         request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
         userRepository.save(currentUser);
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
         return "home_admin";
     }
 
     @GetMapping("deconnect")
     public String deconnexion(WebRequest request)
     {
-        return "modif_user";
+        request.setAttribute("connected", false, WebRequest.SCOPE_SESSION);
+        request.removeAttribute("user", WebRequest.SCOPE_SESSION);
+        return "redirect:/login";
     }
 }
