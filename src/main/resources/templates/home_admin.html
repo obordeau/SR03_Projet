@@ -36,6 +36,7 @@
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Admin</th>
+                <th>Activé</th>
             </tr>
             </thead>
             <tbody>
@@ -43,6 +44,9 @@
                 <td><span th:text="${user.getFirstName()}"></span></td>
                 <td><span th:text="${user.getLastName()}"></span></td>
                 <td><span th:text="${user.isAdmin()}"></span></td>
+                <td><span th:text="${user.isActive()}"></span></td>
+                <td><a th:href="@{/admin/users/active/{id}(id=${user.getId()})}">(Des)Activé</a></td>
+                <td><a th:href="@{/admin/users/modify/{id}(id=${user.getId()})}">Modifier</a></td>
                 <td><a th:href="@{/admin/users/delete/{id}(id=${user.getId()})}">Supprimer</a></td>
             </tr>
             </tbody>
