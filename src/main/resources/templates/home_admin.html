@@ -1,60 +1,152 @@
+<!--<!DOCTYPE HTML>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="fr">-->
+<!--<head>-->
+<!--    <title>Accueil administrateur</title>-->
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>-->
+<!--    <link rel="stylesheet" href="/css/home_admin.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="page"></div>-->
+<!--<header>-->
+<!--    <h1>Application</h1>-->
+<!--</header>-->
+<!--<nav>-->
+<!--    <a th:href="@{/admin/users}">Accueil</a>-->
+<!--    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>-->
+<!--    <a th:href="@{/admin/users/desactivated}">Utilisateurs désactivés</a>-->
+<!--</nav>-->
+<!--<div class="flex-container">-->
+<!--    <aside class="aside">-->
+<!--        <h2>-->
+<!--            <span th:text="${session.user.lastName}"></span>-->
+<!--            <span th:text="${session.user.firstName}"></span>-->
+<!--        </h2>-->
+<!--        <span th:text="${session.user.mail}"></span>-->
+<!--        <form th:action="@{/admin/modifySelf}">-->
+<!--            <input class="button" type="submit" value="Réglages" />-->
+<!--        </form>-->
+<!--        <form th:action="@{/admin/deconnect}">-->
+<!--            <input class="button" type="submit" value="Déconnexion" />-->
+<!--        </form>-->
+<!--    </aside>-->
+<!--    <main class="main">-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Nom</th>-->
+<!--                <th>Prenom</th>-->
+<!--                <th>Admin</th>-->
+<!--                <th>Activé</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="user : ${users}">-->
+<!--                <td><span th:text="${user.getFirstName()}"></span></td>-->
+<!--                <td><span th:text="${user.getLastName()}"></span></td>-->
+<!--                <td><span th:text="${user.isAdmin()}"></span></td>-->
+<!--                <td><span th:text="${user.isActive()}"></span></td>-->
+<!--                <td><a th:href="@{/admin/users/active/{id}(id=${user.getId()})}">(Des)Activé</a></td>-->
+<!--                <td><a th:href="@{/admin/users/modify/{id}(id=${user.getId()})}">Modifier</a></td>-->
+<!--                <td><a th:href="@{/admin/users/delete/{id}(id=${user.getId()})}">Supprimer</a></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </main>-->
+<!--</div>-->
+<!--<footer>-->
+<!--    <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>-->
+<!--</footer>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <title>Accueil administrateur</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="/css/home_admin.css">
+    <title>Accueil administrateur</title>
+    <link href="/css/home_admin.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body>
-<div id="page"></div>
-<header>
-    <h1>Application</h1>
-</header>
-<nav>
-    <a th:href="@{/admin/users}">Accueil</a>
-    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
-    <a th:href="@{/admin/users/desactivated}">Utilisateurs désactivés</a>
-</nav>
+
 <div class="flex-container">
     <aside class="aside">
-        <h2>
-            <span th:text="${session.user.lastName}"></span>
-            <span th:text="${session.user.firstName}"></span>
-        </h2>
-        <span th:text="${session.user.mail}"></span>
-        <form th:action="@{/admin/modifySelf}">
-            <input class="button" type="submit" value="Réglages" />
-        </form>
-        <form th:action="@{/admin/deconnect}">
-            <input class="button" type="submit" value="Déconnexion" />
-        </form>
+        <div class="aside-header">
+            <h3>MATTERLEAST</h3>
+        </div>
+        <div class="content">
+            <div class="channel">
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users}">TOUS LES UTILISATEURS</a></h4>
+                </div>
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users/add}">NOUVEL UTILISATEUR</a></h4>
+                </div>
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users/desactivated}">UTILISATEURS DÉSACTIVÉS</a></h4>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/admin/modifySelf}">>
+            <div class="sidebar-footer">
+                <div class='user_infos_container'>
+                    <h4>Martin Schneider</h4>
+                    <h5>martin.schneider2001@gmail.com</h5>
+                </div>
+            </div>
+        </a>
     </aside>
     <main class="main">
-        <table>
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Admin</th>
-                <th>Activé</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${users}">
-                <td><span th:text="${user.getFirstName()}"></span></td>
-                <td><span th:text="${user.getLastName()}"></span></td>
-                <td><span th:text="${user.isAdmin()}"></span></td>
-                <td><span th:text="${user.isActive()}"></span></td>
-                <td><a th:href="@{/admin/users/active/{id}(id=${user.getId()})}">(Des)Activé</a></td>
-                <td><a th:href="@{/admin/users/modify/{id}(id=${user.getId()})}">Modifier</a></td>
-                <td><a th:href="@{/admin/users/delete/{id}(id=${user.getId()})}">Supprimer</a></td>
-            </tr>
-            </tbody>
-        </table>
+        <header>
+            <h1>Tous les utilisateurs</h1>
+        </header>
+        <div class="table">
+            <table>
+                <thead class="table-header">
+                <tr>
+                    <th class="header__item">
+                        <h4>utilisateur</h4>
+                    </th>
+                    <th class="header__item">
+                        <h4>activé</h4>
+                    </th>
+                    <th class="header__item">
+                        <h4>admin</h4>
+                    </th>
+                    <th class="header__item">
+                        <h4>modifier</h4>
+                    </th>
+                    <th class="header__item">
+                        <h4>supprimer</h4>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="table-content">
+                <tr height="50" class="table-row" th:each="user : ${users}">
+                    <td width="30%"><span th:text="${user.getFirstName()}"></span></td>
+                    <td>
+                        <a th:href="@{/admin/users/active/{id}(id=${user.getId()})}">
+                            <img width="20" height="20" th:src="${user.isActive()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
+                        </a>
+                    </td>
+                    <td>
+                        <img width="20" height="20" th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/users/modify/{id}(id=${user.getId()})}">
+                            <img width="20" height="20" th:src="@{/visuals/edit.png}">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/users/delete/{id}(id=${user.getId()})}">
+                            <img width="20" height="20" th:src="@{/visuals/delete.png}">
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </main>
 </div>
-<footer>
-    <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>
-</footer>
 </body>
-</html>
