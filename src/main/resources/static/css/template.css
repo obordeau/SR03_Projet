@@ -1,0 +1,201 @@
+@font-face {
+    font-family: 'Varela Round';
+    font-style: normal;
+    font-weight: 500;
+    src: url(https://fonts.gstatic.com/s/varelaround/v19/w8gdH283Tvk__Lua32TysjIfp8uP.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Varela Round Normal';
+    font-style: normal;
+    font-weight: 800;
+    src: url(https://fonts.gstatic.com/s/varelaround/v19/w8gdH283Tvk__Lua32TysjIfp8uP.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+    --primary-color: #337dff;
+    --secondary-color: #70a4ff;
+    --complimentary-color: #88BFB5;
+    --contrast-color: #F2E527;
+    --light-color: #D2A9D9;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Varela Round", serif;
+}
+
+.main {
+    flex: 80%;
+    background-color: #fff;
+}
+
+.aside {
+    flex: 20%;
+    background-color: var(--secondary-color);
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+    /*max-height: auto;*/
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #efefef;
+}
+
+@media (max-width: 800px) {
+    .flex-container{
+        flex-direction: column;
+        min-height: auto;
+    }
+    .aside {
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+}
+
+/* Header du main */
+header {
+    position: relative;
+    text-align: center;
+    background-color: #efefef;
+    width: 100%;
+    margin: 0;
+    padding: 22px;
+    box-shadow: 8px 5px 20px #969595;
+}
+
+header h1 {
+    font-size: 25px;
+    padding: 0;
+    line-height: 0;
+    color : #616161;
+}
+
+/* Grand button de navigation dans aside */
+.fix-nav {
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 17px;
+    height: 100%;
+}
+
+.fix-nav a:hover {
+    color: #0248c2;
+}
+
+.fix-nav a {
+    color: whitesmoke;
+    text-decoration: none;
+    text-align: center;
+    font-size: 18px;
+}
+
+.fix-nav:first-child {
+    border-bottom: 1px solid #efefef;
+}
+
+/* Sous button de navigation dans aside*/
+.nav {
+    width: 100%;
+    background-color: var(--secondary-color);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5%;
+    z-index: 1;
+    border-top: 1px solid #efefef;
+}
+
+.nav:last-child {
+    border-bottom: 1px solid #efefef;
+}
+
+.nav:hover {
+    background-color: #0248c2;
+}
+
+.nav a {
+    color: whitesmoke;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5%;
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+    font-family: 'Varela Round Normal', serif;
+}
+
+.nav a:hover {
+    background-color: #0248c2;
+    width: 100%;
+    color: whitesmoke;
+}
+
+/* Header du aside */
+.aside-header {
+    color: whitesmoke;
+    position: relative;
+    top: 0;
+    height: 80px;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #efefef;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+/* content du aside */
+.content {
+    width: 100%;
+    position: relative;
+    height: 80%;
+    padding-top: 5px;
+    background-color: var(--primary-color);
+    color: whitesmoke;
+}
+
+/* footer du aside */
+.sidebar-footer {
+    justify-content: center;
+    position: relative;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+}
+
+/* user infos dans aside */
+.user_infos_container {
+    padding: 0 20px 20px;
+    background-image: url('../visuals/settings.png');
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: 90% 0;
+}
+
+.sidebar-footer h4 {
+    color: whitesmoke;
+}
+
+.sidebar-footer a {
+    text-decoration: none;
+}
+
+.user_infos_container:hover {
+    background-image: url('../visuals/settings_hover.png');
+}
+
+.sidebar-footer h5 {
+    color: lightgray;
+}
