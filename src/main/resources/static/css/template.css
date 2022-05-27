@@ -168,20 +168,25 @@ header h1 {
 
 /* footer du aside */
 .sidebar-footer {
-    justify-content: center;
+    display: flex;
+    justify-content: space-around;
     position: relative;
     bottom: 0;
-    height: auto;
+    height: 8%;
     width: 100%;
 }
 
 /* user infos dans aside */
+/*.user_infos_container {*/
+/*    padding: 0 20px 20px;*/
+/*    background-image: url('../visuals/settings.png');*/
+/*    background-size: 20px;*/
+/*    background-repeat: no-repeat;*/
+/*    background-position: 90% 0;*/
+/*}*/
+
 .user_infos_container {
-    padding: 0 20px 20px;
-    background-image: url('../visuals/settings.png');
-    background-size: 20px;
-    background-repeat: no-repeat;
-    background-position: 90% 0;
+    width: 160px;
 }
 
 .sidebar-footer h4 {
@@ -189,12 +194,12 @@ header h1 {
 }
 
 .sidebar-footer a {
-    text-decoration: none;
+    align-self: center;
 }
 
-.user_infos_container:hover {
-    background-image: url('../visuals/settings_hover.png');
-}
+/*.user_infos_container:hover {*/
+/*    background-image: url('../visuals/settings_hover.png');*/
+/*}*/
 
 .sidebar-footer h5 {
     color: lightgray;
