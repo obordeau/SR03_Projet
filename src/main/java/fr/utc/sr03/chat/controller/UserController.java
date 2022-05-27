@@ -15,29 +15,36 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+//import java.util.Date;
+
+import javax.swing.event.ChangeEvent;
+import java.util.ArrayList;
+import java.sql.Date;
+
 import java.util.List;
 
-@Controller
-@RequestMapping("user")
+@RestController
 public class UserController {
     @Autowired
     private ChannelRepository channelRepository;
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("channels")
-    public String getChannelsList(Model model) {
-        List<Channel> channels = channelRepository.findAll();
-        List owners = new ArrayList<>();
-        for (int i = 0; i < channels.size(); i++) {
-            owners.add(userRepository.getById((long) channels.get(i).getOwner()).getFirstName());
-        }
-        model.addAttribute("channels", channels);
-        model.addAttribute("owners", owners);
-        return "home_user";
+    @GetMapping("/allchannels")
+    public List <Channel> getChannelsList() {
+        return channelRepository.findAll();
+    }
+    @CrossOrigin(origins = "*")
+    @PostMapping("/addchannel")
+    public Channel addChannel(@RequestBody Channel channel) {
+        channel.setOwner(1);
+        channel.setStartDate(new Date(System.currentTimeMillis()));
+        channel.setEndDate(new Date(System.currentTimeMillis()));
+        System.out.println(channel);
+        return channelRepository.save(channel);
     }
 
     @GetMapping("channels/mine")
@@ -50,7 +57,7 @@ public class UserController {
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
     public OutputMessage send(Message message) throws Exception {
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        String time = new SimpleDateFormat("HH:mm").format(new java.util.Date());
         return new OutputMessage(message.getFrom(), message.getText(), time);
     }
 
