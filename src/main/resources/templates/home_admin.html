@@ -88,14 +88,18 @@
                 </div>
             </div>
         </div>
-        <a th:href="@{/admin/modifySelf}">>
-            <div class="sidebar-footer">
-                <div class='user_infos_container'>
-                    <h4>Martin Schneider</h4>
-                    <h5>martin.schneider2001@gmail.com</h5>
-                </div>
+        <div class="sidebar-footer">
+            <div class='user_infos_container'>
+                <h4><span th:text="${session.user.firstName}"></span></h4>
+                <h5><span th:text="${session.user.mail}"></span></h5>
             </div>
-        </a>
+            <a th:href="@{/admin/modifySelf}">
+                <img width="20" height="20" th:src="@{/visuals/settings.png}"/>
+            </a>
+            <a th:href="@{/admin/deconnect}">
+                <img width="20" height="20" th:src="@{/visuals/deconnexion.png}"/>
+            </a>
+        </div>
     </aside>
     <main class="main">
         <header>
@@ -127,11 +131,13 @@
                     <td width="30%"><span th:text="${user.getFirstName()}"></span></td>
                     <td>
                         <a th:href="@{/admin/users/active/{id}(id=${user.getId()})}">
-                            <img width="20" height="20" th:src="${user.isActive()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
+                            <img width="20" height="20"
+                                 th:src="${user.isActive()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
                         </a>
                     </td>
                     <td>
-                        <img width="20" height="20" th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
+                        <img width="20" height="20"
+                             th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
                     </td>
                     <td>
                         <a th:href="@{/admin/users/modify/{id}(id=${user.getId()})}">
