@@ -4,6 +4,7 @@ import fr.utc.sr03.chat.dao.ChannelRepository;
 import fr.utc.sr03.chat.dao.GuestsRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.*;
+import org.attoparser.dom.INestableNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
