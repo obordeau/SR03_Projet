@@ -14,8 +14,8 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
     List<Channel> findAll();
 
-    List<Channel> findChannelsByOwner(long ownerID);
-
+    List<Channel> findByOwner(int owner);
+    @Transactional
     int deleteChannelById(long id);
 
     Channel getById(Long id);

@@ -13,10 +13,6 @@ public class Channel {
     private String title;
     @Column(name = "description")
     private String description;
-    @Column(name = "start_date")
-    private Date start_date;
-    @Column(name = "end_date")
-    private Date end_date;
     @Column(name = "owner")
     private Integer owner;
 
@@ -54,19 +50,4 @@ public class Channel {
         this.title = title;
     }
 
-    public Date getStartDate() {
-        return start_date;
-    }
-
-    public void setStartDate(Date start_date) {
-        this.start_date = start_date;
-    }
-
-    public Date getEndDate() {
-        return end_date;
-    }
-
-    public void setEndDate(Date end_date) {
-        this.end_date = end_date;
-    }
 }

@@ -9,9 +9,9 @@ public class Guests {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY) // strategy=GenerationType.IDENTITY => obligatoire pour auto increment mysql
     private long id;
-    private long user;
+    private int user;
 
-    private long channel;
+    private int channel;
 
     public Guests(){}
 
@@ -23,19 +23,19 @@ public class Guests {
         this.id = id;
     }
 
-    public long getUser() {
+    public int getUser() {
         return user;
     }
 
-    public void setUser(long user) {
+    public void setUser(int user) {
         this.user = user;
     }
 
-    public long getChannel() {
+    public int getChannel() {
         return channel;
     }
 
-    public void setChannel(long channel) {
+    public void setChannel(int channel) {
         this.channel = channel;
     }
 }
