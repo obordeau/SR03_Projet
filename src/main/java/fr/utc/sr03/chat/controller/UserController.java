@@ -68,7 +68,7 @@ public class UserController {
         }
         return userList;
     }
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/userinformations/{id}")
     public User getUserInformations(@PathVariable long id) {
         return userRepository.findById(id);
@@ -104,8 +104,8 @@ public class UserController {
         return "home_user";
     }*/
 
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
+    @MessageMapping("/chat/{channel}")
+    @SendTo("/topic/messages/{channel}")
     public OutputMessage send(Message message) throws Exception {
         String time = new SimpleDateFormat("HH:mm").format(new java.util.Date());
         return new OutputMessage(message.getFrom(), message.getText(), time);
