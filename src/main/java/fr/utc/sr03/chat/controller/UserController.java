@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 //import java.util.Date;
 
+import javax.security.auth.callback.CallbackHandler;
 import javax.swing.event.ChangeEvent;
 import java.util.ArrayList;
 import java.sql.Date;
@@ -34,9 +35,19 @@ public class UserController {
     @Autowired
     private GuestsRepository guestsRepository;
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/allchannels")
-    public List <Channel> getChannelsList() {
-        return channelRepository.findAll();
+    @GetMapping("/allchannels/{id}")
+    public List <Channel> getChannels(@PathVariable Integer id) {
+        List<Guests> guests = guestsRepository.findByUser(id);
+        List<Channel> channels = channelRepository.findByOwner(id);
+        for (Guests guest : guests) {
+            Channel newChannel = new Channel();
+            newChannel.setId(channelRepository.getById((long) guest.getChannel()).getId());
+            newChannel.setDescription(channelRepository.getById((long) guest.getChannel()).getDescription());
+            newChannel.setTitle(channelRepository.getById((long) guest.getChannel()).getTitle());
+            newChannel.setOwner(channelRepository.getById((long) guest.getChannel()).getOwner());
+            channels.add(newChannel);
+        }
+        return channels;
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/mychannels/{id}")
@@ -79,6 +90,14 @@ public class UserController {
     public Channel addChannel(@RequestBody Channel channel) {
         channel.setOwner(1);
         return channelRepository.save(channel);
+    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/modifyuser")
+    public User modifyUser(@RequestBody User user) {
+        user.setActive(1);
+        user.setAdmin(0);
+        user.setPassword("azerty");
+        return userRepository.save(user);
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/deletechannel")

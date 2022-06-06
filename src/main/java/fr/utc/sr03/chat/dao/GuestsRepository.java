@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface GuestsRepository extends JpaRepository<Guests, Long> {
     List<Guests> findByChannel(int channel);
+    List<Guests> findByUser(int user);
     @Transactional
     int deleteGuestsByUserAndChannel(int user, int channel);
 
