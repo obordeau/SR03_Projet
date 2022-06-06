@@ -117,6 +117,13 @@ public class UserController {
         return guestsRepository.save(guest);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/loguser")
+    public User logUser(@RequestBody User user) {
+        User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
+        return currentUser;
+    }
+
 /*    @GetMapping("channels/mine")
     public String getMyChannelsList(Model model, WebRequest request) {
         List<Channel> channels = channelRepository.findChannelsByOwner((long) request.getAttribute("user.id", WebRequest.SCOPE_SESSION));
