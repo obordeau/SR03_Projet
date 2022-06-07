@@ -116,6 +116,13 @@ public class UserController {
     public Guests addGuest(@RequestBody Guests guest) {
         return guestsRepository.save(guest);
     }
+    
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/loguser")
+    public User logUser(@RequestBody User user) {
+        User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
+        return currentUser;
+    }
 
     @MessageMapping("/chat/{channel}")
     @SendTo("/topic/messages/{channel}")
