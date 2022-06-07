@@ -117,26 +117,11 @@ public class UserController {
         return guestsRepository.save(guest);
     }
 
-/*    @GetMapping("channels/mine")
-    public String getMyChannelsList(Model model, WebRequest request) {
-        List<Channel> channels = channelRepository.findChannelsByOwner((long) request.getAttribute("user.id", WebRequest.SCOPE_SESSION));
-        model.addAttribute("channels", channels);
-        return "home_user";
-    }*/
-
     @MessageMapping("/chat/{channel}")
     @SendTo("/topic/messages/{channel}")
     public OutputMessage send(Message message) throws Exception {
         String time = new SimpleDateFormat("HH:mm").format(new java.util.Date());
         return new OutputMessage(message.getFrom(), message.getText(), time);
     }
-
-
-    /*@GetMapping("channels/invites")
-    public String getInviteChannelsList(Model model, WebRequest request) {
-        List<Channel> channels = channelRepository.findChannelsByOwner((long) request.getAttribute("user.id", WebRequest.SCOPE_SESSION));
-        model.addAttribute("channels", channels);
-        return "home_user";*/
-
 
 }
