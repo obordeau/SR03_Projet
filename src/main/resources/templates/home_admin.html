@@ -103,7 +103,7 @@
     </aside>
     <main class="main">
         <header>
-            <h1>Tous les utilisateurs</h1>
+            <h1><span th:text="${title}"></span></h1>
         </header>
         <div class="table">
             <table>
@@ -136,8 +136,10 @@
                         </a>
                     </td>
                     <td>
+                        <a th:href="@{/admin/users/admin/{id}(id=${user.getId()})}">
                         <img width="20" height="20"
                              th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
+                        </a>
                     </td>
                     <td>
                         <a th:href="@{/admin/users/modify/{id}(id=${user.getId()})}">

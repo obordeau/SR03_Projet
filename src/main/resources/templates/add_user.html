@@ -6,29 +6,66 @@
     <link rel="stylesheet" href="/css/add_user.css">
 </head>
 <body>
-<header>
-    <h1>Application</h1>
-</header>
-<nav class="nav">
-    <a th:href="@{/admin/users}">Accueil</a>
-    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
-    <a th:href="@{/admin/users/desactivated}">Utilisateurs désactivés</a>
-</nav>
 <div class="flex-container">
     <aside class="aside">
-        <h2>
-            <span th:text="${session.user.lastName}"></span>
-            <span th:text="${session.user.firstName}"></span>
-        </h2>
-        <span th:text="${session.user.mail}"></span>
-        <form th:action="@{/admin/modifySelf}">
-            <input class="button" type="submit" value="Réglages" />
-        </form>
-        <form th:action="@{/admin/deconnect}">
-            <input class="button" type="submit" value="Déconnexion" />
-        </form>
+        <div class="aside-header">
+            <h3>MATTERLEAST</h3>
+        </div>
+        <div class="content">
+            <div class="channel">
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users}">TOUS LES UTILISATEURS</a></h4>
+                </div>
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users/add}">NOUVEL UTILISATEUR</a></h4>
+                </div>
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users/desactivated}">UTILISATEURS DÉSACTIVÉS</a></h4>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <div class='user_infos_container'>
+                <h4><span th:text="${session.user.firstName}"></span></h4>
+                <h5><span th:text="${session.user.mail}"></span></h5>
+            </div>
+            <a th:href="@{/admin/modifySelf}">
+                <img width="20" height="20" th:src="@{/visuals/settings.png}"/>
+            </a>
+            <a th:href="@{/admin/deconnect}">
+                <img width="20" height="20" th:src="@{/visuals/deconnexion.png}"/>
+            </a>
+        </div>
     </aside>
-    <main>
+    <main class="main">
+        <header>
+            <h1><span th:text="${title}"></span></h1>
+        </header>
+        <form class="form-text" th:action="${path}" th:object="${newUser}" method="post">
+        <div class="input">
+            <input type="text" class="input-field" th:value="${currentUser.firstName}" id="firstName" name="firstName" required />
+            <label class="input-label" for="firstname">Prénom</label>
+        </div>
+        <div class="input">
+            <input type="text" class="input-field" th:value="${currentUser.lastName}" id="lastName" name="lastName" required/>
+            <label class="input-label" for="lastname">Nom</label>
+        </div>
+        <div class="input">
+            <input type="text" class="input-field" th:value="${currentUser.mail}" id="mail" name="mail" required />
+            <label class="input-label" for="mail">Email</label>
+        </div>
+        <div class="input">
+            <input type="password" class="input-field" th:value="${currentUser.password}" id="password" name="password" required />
+            <label class="input-label">Mot de passe</label>
+        </div>
+        <div class="action">
+            <button class="action-button" type="submit">Valider</button>
+        </div>
+        </form >
+    </main>
+</div>
+<!--
+
         <form action="#" th:action="${path}" th:object="${newUser}" method="post">
             <div class="container">
                 <h1>Ajouter un utilistaeur</h1>
@@ -64,129 +101,7 @@
                 </div>
             </div>
         </form>
-    </main>
-</div>
-<footer>footer</footer>
+-->
+
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="fr">-->
-
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Application de chat</title>-->
-<!--    <link href="form.css" rel="stylesheet">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--</head>-->
-
-<!--<body>-->
-<!--<div id="page"></div>-->
-<!--<div class="flex-container">-->
-<!--    <aside class="aside">-->
-<!--        <div class="aside-header">-->
-<!--            <h3>MATTERLEAST</h3>-->
-<!--        </div>-->
-<!--        <div class="content">-->
-<!--            <div class="channel">-->
-<!--                <div class="fix-nav">-->
-<!--                    <h4><a href="#">MES CHATS</a></h4>-->
-<!--                </div>-->
-<!--                <div class="fix-nav">-->
-<!--                    <h4><a href="#">TOUS LES CHATS</a></h4>-->
-<!--                </div>-->
-<!--                <div class="nav">-->
-<!--                    <a href="#">channel 1</a>-->
-<!--                </div>-->
-<!--                <div class="nav">-->
-<!--                    <a href="#">channel 2</a>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <a href="#">-->
-<!--            <div class="sidebar-footer">-->
-<!--                <div class='user_infos_container'>-->
-<!--                    <h4>Martin Schneider</h4>-->
-<!--                    <h5>martin.schneider2001@gmail.com</h5>-->
-<!--                </div>-->
-<!--        </a>-->
-<!--</div>-->
-<!--</aside>-->
-<!--<main class="main">-->
-<!--    <header>-->
-<!--        <h1>Modifier le chat</h1>-->
-<!--    </header>-->
-<!--    <form class="form-text">-->
-<!--        <div class="input">-->
-<!--            <input type="text" class="input-field" value="Bobby Chat" required />-->
-<!--            <label class="input-label">Titre</label>-->
-<!--        </div>-->
-<!--        <div class="input">-->
-<!--            <input type="text" class="input-field" value="Un chat de bobby" required />-->
-<!--            <label class="input-label">Description</label>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--    <p class="label">Invités</p>-->
-<!--    <div class="table">-->
-<!--        <form method="get" id="userForm" class="form_undisplay" novalidate>-->
-<!--            <input type="text" name="text" class="search" placeholder="Chercher un utilisateur">-->
-<!--        </form>-->
-<!--        <div class="table-header">-->
-<!--            <div class="header__item">-->
-<!--                <h4>invité</h4>-->
-<!--            </div>-->
-<!--            <div class="header__item">-->
-<!--                <h4>supprimer du chat</h4>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="table-content">-->
-<!--            <div class="table-row">-->
-<!--                <div class="table-data">bobby</div>-->
-<!--                <div class="table-data supprimer"><a href="#">suppr</a></div>-->
-<!--            </div>-->
-<!--            <div class="table-row">-->
-<!--                <div class="table-data">martin</div>-->
-<!--                <div class="table-data supprimer"><a href="#">suppr</a></div>-->
-<!--            </div>-->
-<!--            <div class="table-row">-->
-<!--                <div class="table-data">océ</div>-->
-<!--                <div class="table-data supprimer"><a href="#">suppr</a></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <p class="label">Ajouter des utilisateurs au chat</p>-->
-<!--    <div class="table">-->
-<!--        <form method="get" id="userForm" class="form_undisplay" novalidate>-->
-<!--            <input type="text" name="text" class="search" placeholder="Chercher un utilisateur">-->
-<!--        </form>-->
-<!--        <div class="table-header">-->
-<!--            <div class="header__item">-->
-<!--                <h4>utilisateur</h4>-->
-<!--            </div>-->
-<!--            <div class="header__item">-->
-<!--                <h4>ajouter au chat</h4>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="table-content">-->
-<!--            <div class="table-row">-->
-<!--                <div class="table-data">bobby</div>-->
-<!--                <div class="table-data ajouter"><a href="#">adddd</a></div>-->
-<!--            </div>-->
-<!--            <div class="table-row">-->
-<!--                <div class="table-data">martin</div>-->
-<!--                <div class="table-data ajouter"><a href="#">adddd</a></div>-->
-<!--            </div>-->
-<!--            <div class="table-row">-->
-<!--                <div class="table-data">océ</div>-->
-<!--                <div class="table-data ajouter"><a href="#">adddd</a></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="action">-->
-<!--        <button class="action-button">Valider</button>-->
-<!--    </div>-->
-<!--    </form>-->
-<!--</main>-->
-<!--</div>-->
-<!--</div>-->
-<!--</body>-->

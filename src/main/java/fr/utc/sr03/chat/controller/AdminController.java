@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.SyncFailedException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -25,6 +26,7 @@ public class AdminController {
     public String getUserList(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
+        model.addAttribute("title", "Tous les utilisateurs");
         return "home_admin";
     }
 
@@ -32,6 +34,8 @@ public class AdminController {
     public String getDesactivatedUsers(Model model) {
         List<User> users = userRepository.findUsersByActiveIs(0);
         model.addAttribute("users", users);
+        model.addAttribute("title", "Utilisateurs désactivés");
+        model.addAttribute("desactivate", 1);
         return "home_admin";
     }
 
@@ -40,11 +44,11 @@ public class AdminController {
         model.addAttribute("currentUser", new User());
         model.addAttribute("newUser", new User());
         model.addAttribute("path", "add");
+        model.addAttribute("title", "Ajouter un utilisateur");
         return "add_user";
     }
 
     @PostMapping("users/add")
-
     public String addUser(@ModelAttribute User newUser, Model model) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         if (!userRepository.findByMail(newUser.getMail()).isEmpty()) {
             System.out.println("Email déja affecte.");
@@ -55,6 +59,7 @@ public class AdminController {
         digest.update(newUser.getPassword().getBytes("utf8"));
         String hash = String.format("%0128x", new BigInteger(1, digest.digest()));
         newUser.setPassword(hash);
+        newUser.setAdmin(0);
         newUser.setActive(1);
         userRepository.save(newUser);
         List<User> users = userRepository.findAll();
@@ -63,8 +68,23 @@ public class AdminController {
     }
 
     @RequestMapping ("users/delete/{userId}")
-    public String deleteUser(@PathVariable long userId, Model model) {
+    public String deleteUser(@PathVariable long userId, @ModelAttribute Integer desactivate, Model model) {
+        System.out.println(desactivate);
         userRepository.deleteUserById(userId);
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+        return "home_admin";
+    }
+
+    @RequestMapping ("users/admin/{userId}")
+    public String adminUser(@PathVariable long userId, Model model) {
+        User currentUser = userRepository.getById(userId);
+        if (currentUser.isAdmin() == 1) {
+            currentUser.setAdmin(0);
+        } else {
+            currentUser.setAdmin(1);
+        }
+        userRepository.save(currentUser);
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "home_admin";
@@ -87,19 +107,25 @@ public class AdminController {
     @RequestMapping ("users/modify/{userId}")
     public String getUser(@PathVariable long userId, Model model) {
         User currentUser = userRepository.getById(userId);
+        currentUser.setPassword(null);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("newUser", new User());
         model.addAttribute("path", userId);
+        model.addAttribute("title", "Modifier un utilisateur");
         return "add_user";
     }
 
     @PostMapping ("users/modify/{userId}")
-    public String modifyUser(@PathVariable long userId, @ModelAttribute User newUser, Model model) {
+    public String modifyUser(@PathVariable long userId, @ModelAttribute User newUser, Model model) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         User currentUser = userRepository.getById(userId);
         currentUser.setMail(newUser.getMail());
         currentUser.setLastName(newUser.getLastName());
         currentUser.setFirstName(newUser.getFirstName());
-        currentUser.setPassword(newUser.getPassword());
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        digest.reset();
+        digest.update(newUser.getPassword().getBytes("utf8"));
+        String hash = String.format("%0128x", new BigInteger(1, digest.digest()));
+        currentUser.setPassword(hash);
         userRepository.save(currentUser);
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);

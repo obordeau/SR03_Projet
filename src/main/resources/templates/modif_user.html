@@ -3,33 +3,63 @@
 <head>
     <title>Accueil administrateur</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="/css/home_admin.css">
+    <link rel="stylesheet" href="/css/add_user.css">
 </head>
 <body>
-<div id="page"></div>
-<header>
-    <h1>Application</h1>
-</header>
-<nav>
-    <a th:href="@{/admin/users}">Accueil</a>
-    <a th:href="@{/admin/users/add}">Nouvel utilisateur</a>
-    <a th:href="@{/admin/users/desactivated}">Utilisateurs désactivés</a>
-</nav>
 <div class="flex-container">
     <aside class="aside">
-        <h2>
-            <span th:text="${session.user.lastName}"></span>
-            <span th:text="${session.user.firstName}"></span>
-        </h2>
-        <span th:text="${session.user.mail}"></span>
-        <form th:action="@{/admin/modifySelf}">
-            <input class="button" type="submit" value="Réglages" />
-        </form>
-        <form th:action="@{/admin/deconnect}">
-            <input class="button" type="submit" value="Déconnexion" />
-        </form>
+        <div class="aside-header">
+            <h3>MATTERLEAST</h3>
+        </div>
+        <div class="content">
+            <div class="channel">
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users}">TOUS LES UTILISATEURS</a></h4>
+                </div>
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users/add}">NOUVEL UTILISATEUR</a></h4>
+                </div>
+                <div class="fix-nav">
+                    <h4><a th:href="@{/admin/users/desactivated}">UTILISATEURS DÉSACTIVÉS</a></h4>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <div class='user_infos_container'>
+                <h4><span th:text="${session.user.firstName}"></span></h4>
+                <h5><span th:text="${session.user.mail}"></span></h5>
+            </div>
+            <a th:href="@{/admin/modifySelf}">
+                <img width="20" height="20" th:src="@{/visuals/settings.png}"/>
+            </a>
+            <a th:href="@{/admin/deconnect}">
+                <img width="20" height="20" th:src="@{/visuals/deconnexion.png}"/>
+            </a>
+        </div>
     </aside>
     <main class="main">
+        <header>
+            <h1>Modifier mes informations</h1>
+        </header>
+        <form class="form-text" th:action="@{/admin/modifySelf}" th:object="${user}" method="post">
+            <div class="input">
+                <input type="text" class="input-field" th:value="${session.user.firstName}" id="firstName" name="firstName" required />
+                <label class="input-label" for="firstname">Prénom</label>
+            </div>
+            <div class="input">
+                <input type="text" class="input-field" th:value="${session.user.lastName}" id="lastName" name="lastName" required/>
+                <label class="input-label" for="lastname">Nom</label>
+            </div>
+            <div class="input">
+                <input type="text" class="input-field" th:value="${session.user.mail}" id="mail" name="mail" required />
+                <label class="input-label" for="mail">Email</label>
+            </div>
+            <div class="action">
+                <button class="action-button" type="submit">Valider</button>
+            </div>
+        </form >
+    </main>
+    <!--<main class="main">
         <form action="#" th:action="@{/admin/modifySelf}" th:object="${user}" method="post">
             <div class="container">
                 <h1>Ajouter un utilistaeur</h1>
@@ -53,10 +83,7 @@
                 </div>
             </div>
         </form>
-    </main>
+    </main>-->
 </div>
-<footer>
-    <p>SR03 - Application de chat 2022 - Martin Schneider et Océane Bordeau</p>
-</footer>
 </body>
 </html>

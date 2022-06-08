@@ -12,6 +12,15 @@ body {
   background-color: #efefef;
   padding: 10px;
 }
+
+.login-button:hover {
+  cursor: pointer;
+}
+
+input:focus {
+  outline:none;
+}
+
 /*=== 2. Anchor Link ===*/
 a {
   color: #aaaaaa;
