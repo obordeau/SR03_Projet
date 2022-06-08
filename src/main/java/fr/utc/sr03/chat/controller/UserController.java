@@ -121,6 +121,10 @@ public class UserController {
     @PostMapping("/loguser")
     public User logUser(@RequestBody User user) {
         User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
+        if (currentUser == null || currentUser.isActive() == 0 || currentUser.isAdmin() == 1) {
+            User nulluser = new User();
+            return nulluser;
+        }
         return currentUser;
     }
 
