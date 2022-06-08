@@ -11,6 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.*;
 import java.util.*;
 
@@ -31,8 +35,13 @@ public class LoginController {
     }
 
     @PostMapping
-    public String postLogin(@ModelAttribute("user") User user, Model model, WebRequest request) {
+    public String postLogin(@ModelAttribute("user") User user, Model model, WebRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         // TODO verif
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        digest.reset();
+        digest.update(user.getPassword().getBytes("utf8"));
+        String hash = String.format("%0128x", new BigInteger(1, digest.digest()));
+        user.setPassword(hash);
         User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
         if (currentUser != null) {
             request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
@@ -42,14 +51,15 @@ public class LoginController {
                 model.addAttribute("users", users);
                 return "home_admin";
             } else {
-                List<Channel> channels = channelRepository.findAll();
-                List owners = new ArrayList<>();
-                for (int i = 0; i < channels.size(); i++) {
-                    owners.add(userRepository.getById((long) channels.get(i).getOwner()).getFirstName());
-                }
-                model.addAttribute("channels", channels);
-                model.addAttribute("owners", owners);
-                return "home_user";
+                System.out.println("L'utilisateur n'est pas admin");
+//                List<Channel> channels = channelRepository.findAll();
+//                List owners = new ArrayList<>();
+//                for (int i = 0; i < channels.size(); i++) {
+//                    owners.add(userRepository.getById((long) channels.get(i).getOwner()).getFirstName());
+//                }
+//                model.addAttribute("channels", channels);
+//                model.addAttribute("owners", owners);
+//                return "home_user";
             }
         }
         return "login";

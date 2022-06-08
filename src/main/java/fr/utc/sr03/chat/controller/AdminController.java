@@ -8,6 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,11 +44,17 @@ public class AdminController {
     }
 
     @PostMapping("users/add")
-    public String addUser(@ModelAttribute User newUser, Model model) {
+
+    public String addUser(@ModelAttribute User newUser, Model model) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         if (!userRepository.findByMail(newUser.getMail()).isEmpty()) {
             System.out.println("Email déja affecte.");
             return "add_user";
         }
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        digest.reset();
+        digest.update(newUser.getPassword().getBytes("utf8"));
+        String hash = String.format("%0128x", new BigInteger(1, digest.digest()));
+        newUser.setPassword(hash);
         newUser.setActive(1);
         userRepository.save(newUser);
         List<User> users = userRepository.findAll();
