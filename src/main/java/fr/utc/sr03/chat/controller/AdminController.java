@@ -35,7 +35,6 @@ public class AdminController {
         List<User> users = userRepository.findUsersByActiveIs(0);
         model.addAttribute("users", users);
         model.addAttribute("title", "Utilisateurs désactivés");
-        model.addAttribute("desactivate", 1);
         return "home_admin";
     }
 
@@ -68,8 +67,7 @@ public class AdminController {
     }
 
     @RequestMapping ("users/delete/{userId}")
-    public String deleteUser(@PathVariable long userId, @ModelAttribute Integer desactivate, Model model) {
-        System.out.println(desactivate);
+    public String deleteUser(@PathVariable long userId, Model model) {
         userRepository.deleteUserById(userId);
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
