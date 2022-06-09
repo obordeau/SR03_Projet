@@ -62,6 +62,7 @@
                 <input type="password" class="input-field" th:value="${verification.passwordRepetition}" id="passwordRepetition" name="passwordRepetition" required />
                 <label class="input-label" for="passwordRepetition">Veuillez entrer de nouveau le mot de passe</label>
             </div>
+            <p style="color : #e74c3c"><span th:text="${alerte}"></span></p>
         <div class="action">
             <button class="action-button" type="submit">Valider</button>
         </div>

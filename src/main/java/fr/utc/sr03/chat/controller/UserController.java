@@ -99,7 +99,6 @@ public class UserController {
     public User modifyUser(@RequestBody User user) {
         user.setActive(1);
         user.setAdmin(0);
-        user.setPassword("azerty");
         return userRepository.save(user);
     }
     @CrossOrigin(origins = "http://localhost:3000")

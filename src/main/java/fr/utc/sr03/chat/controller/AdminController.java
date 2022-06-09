@@ -54,6 +54,7 @@ public class AdminController {
         }
         model.addAttribute("currentUser", new User());
         model.addAttribute("verification", new PasswordVerification());
+        model.addAttribute("alerte", "");
         return "add_user";
     }
 
@@ -63,19 +64,15 @@ public class AdminController {
                 return "redirect:/login";
         }
         if (!userRepository.findByMail(currentUser.getMail()).isEmpty()) {
-            System.out.println("Email déja affecte.");
-            model.addAttribute("currentUser", new User());
-            model.addAttribute("path", "add");
-            model.addAttribute("title", "Ajouter un utilisateur");
-            model.addAttribute("verification", new PasswordVerification());
+            model.addAttribute("alerte", "Email déjà affecté.");
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("verification", verification);
             return "add_user";
         }
         if (!currentUser.getPassword().equals(verification.getPasswordRepetition())) {
-            System.out.println("Les mots de passe ne sont pas les mêmes.");
-            model.addAttribute("currentUser", new User());
-            model.addAttribute("path", "add");
-            model.addAttribute("title", "Ajouter un utilisateur");
-            model.addAttribute("verification", new PasswordVerification());
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("verification", verification);
+            model.addAttribute("alerte", "Les mots de passe ne sont pas les mêmes.");
             return "add_user";
         }
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
@@ -204,6 +201,7 @@ public class AdminController {
         model.addAttribute("path", userId);
         model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
         model.addAttribute("verification", new PasswordVerification());
+        model.addAttribute("alerte", "");
         return "modif_user";
     }
 
@@ -218,19 +216,19 @@ public class AdminController {
         previousDigest.update(verification.getPreviousPassword().getBytes("utf8"));
         String previousHash = String.format("%0128x", new BigInteger(1, previousDigest.digest()));
         if (!currentUser.getPassword().equals(previousHash)) {
-            System.out.println("L'ancien mot de passe ne correspond pas");
             model.addAttribute("user", currentUser);
             model.addAttribute("path", userId);
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
-            model.addAttribute("verification", new PasswordVerification());
+            model.addAttribute("verification", verification);
+            model.addAttribute("alerte", "L'ancien mot de passe ne correspond pas.");
             return "modif_user";
         }
         if (!verification.getNewPassword().equals(verification.getPasswordRepetition())) {
-            System.out.println("Les nouveaux mots de passe ne correspondent pas");
             model.addAttribute("user", currentUser);
             model.addAttribute("path", userId);
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
-            model.addAttribute("verification", new PasswordVerification());
+            model.addAttribute("verification", verification);
+            model.addAttribute("alerte", "Les nouveaux mots de passe ne correspondent pas.");
             return "modif_user";
         }
         currentUser.setMail(user.getMail());
@@ -259,6 +257,7 @@ public class AdminController {
         model.addAttribute("title", "Modifier mes informations");
         model.addAttribute("user", (User)request.getAttribute("user", WebRequest.SCOPE_SESSION));
         model.addAttribute("verification", new PasswordVerification());
+        model.addAttribute("alerte", "");
         return "modif_user";
     }
 
@@ -273,19 +272,19 @@ public class AdminController {
         previousDigest.update(verification.getPreviousPassword().getBytes("utf8"));
         String previousHash = String.format("%0128x", new BigInteger(1, previousDigest.digest()));
         if (!currentUser.getPassword().equals(previousHash)) {
-            System.out.println("L'ancien mot de passe ne correspond pas");
             model.addAttribute("path", "modifySelf");
             model.addAttribute("title", "Modifier mes informations");
             model.addAttribute("user", currentUser);
-            model.addAttribute("verification", new PasswordVerification());
+            model.addAttribute("verification", verification);
+            model.addAttribute("alerte", "L'ancien mot de passe ne correspond pas.");
             return "modif_user";
         }
         if (!verification.getNewPassword().equals(verification.getPasswordRepetition())) {
-            System.out.println("Les nouveaux mots de passe ne correspondent pas");
             model.addAttribute("path", "modifySelf");
             model.addAttribute("title", "Modifier mes informations");
             model.addAttribute("user", currentUser);
-            model.addAttribute("verification", new PasswordVerification());
+            model.addAttribute("verification", verification);
+            model.addAttribute("alerte", "Les nouveaux mots de passe ne correspondent pas.");
             return "modif_user";
         }
         currentUser.setMail(user.getMail());
@@ -307,7 +306,7 @@ public class AdminController {
     }
 
     @GetMapping("deconnect")
-    public String deconnexion(WebRequest request)
+    public String deconnexion(WebRequest request, Model model)
     {
         request.setAttribute("connected", false, WebRequest.SCOPE_SESSION);
         request.removeAttribute("user", WebRequest.SCOPE_SESSION);

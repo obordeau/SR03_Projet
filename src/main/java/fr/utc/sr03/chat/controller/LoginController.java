@@ -31,6 +31,10 @@ public class LoginController {
     @GetMapping
     public String getLogin(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("color", "color : #999999");
+        model.addAttribute("border", "border: 5px solid #efefef");
+        model.addAttribute("alerte", "");
+        model.addAttribute("coloralerte", "color : #aaaaaa");
         return "login";
     }
 
@@ -53,9 +57,19 @@ public class LoginController {
                 model.addAttribute("path", 0);
                 return "home_admin";
             } else {
-                System.out.println("L'utilisateur n'est pas admin");
+                model.addAttribute("color", "color : #e74c3c");
+                model.addAttribute("border", "border: 5px solid #e74c3c");
+                model.addAttribute("user", new User());
+                model.addAttribute("alerte", "L'utilisateur n'est pas admin.");
+                model.addAttribute("coloralerte", "color : #e74c3c");
+                return "login";
             }
         }
+        model.addAttribute("alerte", "L'utilisateur ou le mot de passe n'est pas valide.");
+        model.addAttribute("coloralerte", "color : #e74c3c");
+        model.addAttribute("color", "color : #e74c3c");
+        model.addAttribute("border", "border: 5px solid #e74c3c");
+        model.addAttribute("user", new User());
         return "login";
     }
 }

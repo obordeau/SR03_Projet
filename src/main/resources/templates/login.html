@@ -14,16 +14,17 @@
             <div class="main-login-form">
                 <div class="login-group">
                     <div class="form-group">
-                        <input type="text" class="form-control" th:field="*{mail}" placeholder="mail" />
+                        <input type="text" th:style="${color}" class="form-control" th:field="*{mail}" placeholder="mail" />
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" th:field="*{password}" placeholder="password" />
+                        <input type="password" th:style="${color}" class="form-control" th:field="*{password}" placeholder="mot de passe" />
                     </div>
                 </div>
-                <button type="submit" class="login-button"><i class="chevron">&gt;</i></button>
+                <button type="submit" th:style="${border}" class="login-button"><i th:style="${color}" class="chevron">&gt;</i></button>
             </div>
         </form>
     </div>
+    <p th:style="${coloralerte}"><span th:text="${alerte}"></span></p>
 </div>
 </body>
 </html>
