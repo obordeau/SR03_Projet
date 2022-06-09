@@ -57,6 +57,11 @@ public class UserController {
     public List <Channel> getMyChannels(@PathVariable Integer id) {
         return channelRepository.findByOwner(id);
     }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/getusers")
+    public List <User> getUsers() {
+        return userRepository.findAll();
+    }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/guests/{channel}")
