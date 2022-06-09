@@ -58,6 +58,11 @@ public class UserController {
     public List <Channel> getMyChannels(@PathVariable Integer id) {
         return channelRepository.findByOwner(userRepository.findById(id));
     }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/getusers")
+    public List <User> getUsers() {
+        return userRepository.findAll();
+    }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/guests/{channel}")
@@ -106,7 +111,6 @@ public class UserController {
     public User modifyUser(@RequestBody User user) {
         user.setActive(1);
         user.setAdmin(0);
-        user.setPassword("azerty");
         return userRepository.save(user);
     }
     @CrossOrigin(origins = "http://localhost:3000")
