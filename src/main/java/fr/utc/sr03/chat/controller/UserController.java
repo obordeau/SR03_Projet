@@ -1,5 +1,6 @@
 package fr.utc.sr03.chat.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.utc.sr03.chat.dao.ChannelRepository;
 import fr.utc.sr03.chat.dao.GuestsRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
@@ -41,7 +42,7 @@ public class UserController {
     @GetMapping("/allchannels/{id}")
     public List <Channel> getChannels(@PathVariable Integer id) {
         List<Guests> guests = guestsRepository.findByUser(id);
-        List<Channel> channels = channelRepository.findByOwner(id);
+        List<Channel> channels = channelRepository.findByOwner(userRepository.findById(id));
         for (Guests guest : guests) {
             Channel newChannel = new Channel();
             newChannel.setId(channelRepository.getById((long) guest.getChannel()).getId());
@@ -55,7 +56,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/mychannels/{id}")
     public List <Channel> getMyChannels(@PathVariable Integer id) {
-        return channelRepository.findByOwner(id);
+        return channelRepository.findByOwner(userRepository.findById(id));
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -90,9 +91,15 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/addchannel")
-    public Channel addChannel(@RequestBody Channel channel) {
-        channel.setOwner(1);
-        return channelRepository.save(channel);
+    public Channel addChannel(@RequestBody ObjectNode json) {
+        Channel newChannel = new Channel();
+        if (json.get("id") != null) {
+            newChannel.setId(json.get("id").asInt());
+        }
+        newChannel.setTitle(json.get("title").asText());
+        newChannel.setDescription(json.get("description").asText());
+        newChannel.setOwner(userRepository.findById(json.get("ownerId").asInt()));
+        return channelRepository.save(newChannel);
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/modifyuser")
