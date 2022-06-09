@@ -17,7 +17,7 @@
         <div class="content">
             <div class="channel">
                 <div class="fix-nav">
-                    <h4><a th:href="@{/admin}">TOUS LES UTILISATEURS</a></h4>
+                    <h4><a th:href="@{/admin/0}">TOUS LES UTILISATEURS</a></h4>
                 </div>
                 <div class="fix-nav">
                     <h4><a th:href="@{/admin/add}">NOUVEL UTILISATEUR</a></h4>
@@ -44,33 +44,8 @@
         <header>
             <h1><span th:text="${title}"></span></h1>
         </header>
-        <table>
-            <tr><th>Nom</th>
-                <th>Prenom</th>
-            </tr>
-            <tr th:each="user : ${listUsers}">
-                <td th:text="${user.firstName}"></td>
-                <td th:text="${user.lastName}"></td>
-            </tr>
-        </table>
-        <div th:if = "${totalPages > 1}">
-            <div class = "row col-sm-10">
-                <div class = "col-sm-2">
-                    <p>Total Rows: </p><span th:text="${totalItems}"></span>
-                </div>
-                <div class = "col-sm-1">
-					<span th:each="i: ${#numbers.sequence(0, totalPages)}">
-                        <a th:if="${currentPage != i}" th:href="@{/admin/page/1}">tfvj</a>
-						<span th:unless="${currentPage != i}"></span>
-					</span>
-                </div>
-                <div class = "col-sm-1">
-                    <a th:if="${currentPage < totalPages}" th:href="@{'/admin/page/' + ${currentPage + 1}}">Next</a>
-                    <span th:unless="${currentPage < totalPages}">Next</span>
-                </div>
-            </div>
-        </div>
-        <!--<div class="table">
+
+        <div class="table">
             <table>
                 <thead class="table-header">
                 <tr>
@@ -92,7 +67,7 @@
                 </tr>
                 </thead>
                 <tbody class="table-content">
-                <tr height="50" class="table-row" th:each="user : ${users}">
+                <tr height="50" class="table-row" th:each="user : ${listUsers}">
                     <td width="30%"><span th:text="${user.getFirstName()}"></span></td>
                     <td>
                         <a th:href="${path} ? @{/admin/desactivated/active/{id}(id=${user.getId()})} : @{/admin/active/{id}(id=${user.getId()})}">
@@ -102,8 +77,8 @@
                     </td>
                     <td>
                         <a th:href="${path} ? @{/admin/desactivated/admin/{id}(id=${user.getId()})} : @{/admin/admin/{id}(id=${user.getId()})}">
-                        <img width="20" height="20"
-                             th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
+                            <img width="20" height="20"
+                                 th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
                         </a>
                     </td>
                     <td>
@@ -119,7 +94,37 @@
                 </tr>
                 </tbody>
             </table>
-        </div>-->
+        </div>
+        <!--<table>
+            <tr><th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+            <tr th:each="user : ${listUsers}">
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+            </tr>
+        </table>-->
+        <div th:if = "${totalPages > 1}">
+            <div class = "row col-sm-10">
+                <div class = "col-sm-2">
+                    <p>Total Rows: </p><span th:text="${totalItems}"></span>
+                </div>
+                <div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(0, totalPages -1 )}">
+                        <a th:if="${currentPage != i}" th:href="@{'/admin/' + ${i}}"><span th:text="${i}"></span></a>
+						<span th:unless="${currentPage != i}"></span>
+					</span>
+                </div>
+                <div class = "col-sm-1">
+                    <a th:if="${currentPage > 0}" th:href="@{'/admin/' + ${currentPage - 1}}">Previous</a>
+                    <span th:unless="${currentPage > 0 }">Previous</span>
+                </div>
+                <div class = "col-sm-1">
+                    <a th:if="${currentPage < totalPages -1}" th:href="@{'/admin/' + ${currentPage + 1}}">Next</a>
+                    <span th:unless="${currentPage < totalPages-1}">Next</span>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 </body>

@@ -31,7 +31,7 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("page/{pageNo}")
+    @GetMapping("{pageNo}")
     public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
             return "redirect:/login";
@@ -39,7 +39,6 @@ public class AdminController {
         int pageSize = 5;
         Page<User> page = userService.findPaginated(pageNo, pageSize);
         List<User> listUsers = page.getContent();
-        System.out.println(listUsers);
         model.addAttribute("users", page.getContent());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -51,10 +50,12 @@ public class AdminController {
         model.addAttribute("path", 0);
         return "home_admin";
     }
+/*
     @GetMapping("")
     public String getUserList(Model model, WebRequest request) {
         return "redirect:/admin/page/0";
     }
+*/
 
     @GetMapping("desactivated")
     public String getDesactivatedUsers(Model model, WebRequest request) {
@@ -65,7 +66,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Utilisateurs désactivés");
         model.addAttribute("path", 1);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @GetMapping("add")
@@ -107,7 +108,7 @@ public class AdminController {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         model.addAttribute("title", "Tous les utilisateurs");
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("delete/{userId}")
@@ -120,7 +121,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Tous les utilisateurs");
         model.addAttribute("path", 0);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("admin/{userId}")
@@ -139,7 +140,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Tous les utilisateurs");
         model.addAttribute("path", 0);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("active/{userId}")
@@ -158,7 +159,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Tous les utilisateurs");
         model.addAttribute("path", 0);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("desactivated/delete/{userId}")
@@ -171,7 +172,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Utilisateurs désactivés");
         model.addAttribute("path", 1);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("desactivated/admin/{userId}")
@@ -190,7 +191,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Utilisateurs désactivés");
         model.addAttribute("path", 1);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("desactivated/active/{userId}")
@@ -209,7 +210,7 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("title", "Utilisateurs désactivés");
         model.addAttribute("path", 1);
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @RequestMapping ("modify/{userId}")
@@ -266,7 +267,7 @@ public class AdminController {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         model.addAttribute("title", "Tous les utilisateurs");
-        return "home_admin";
+        return "redirect:/admin/0";
     }
     @GetMapping("modifySelf")
     public String getUserInformation(Model model, WebRequest request)
@@ -323,7 +324,7 @@ public class AdminController {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         model.addAttribute("title", "Tous les utilisateurs");
-        return "home_admin";
+        return "redirect:/admin/0";
     }
 
     @GetMapping("deconnect")

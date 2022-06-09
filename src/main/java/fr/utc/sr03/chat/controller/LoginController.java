@@ -55,7 +55,7 @@ public class LoginController {
                 model.addAttribute("users", users);
                 model.addAttribute("title", "Tous les utilisateurs");
                 model.addAttribute("path", 0);
-                return "home_admin";
+                return "redirect:/admin/0";
             } else {
                 model.addAttribute("color", "color : #e74c3c");
                 model.addAttribute("border", "border: 5px solid #e74c3c");
