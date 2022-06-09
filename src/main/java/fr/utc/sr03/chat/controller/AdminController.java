@@ -1,9 +1,15 @@
 package fr.utc.sr03.chat.controller;
 
+import fr.utc.sr03.chat.UserService;
+import fr.utc.sr03.chat.dao.UserPaging;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.PasswordVerification;
 import fr.utc.sr03.chat.model.User;
+import jdk.jfr.Frequency;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +28,32 @@ import java.util.Optional;
 public class AdminController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("")
-    public String getUserList(Model model, WebRequest request) {
+    @GetMapping("page/{pageNo}")
+    public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
             return "redirect:/login";
         }
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
+        int pageSize = 5;
+        Page<User> page = userService.findPaginated(pageNo, pageSize);
+        List<User> listUsers = page.getContent();
+        System.out.println(listUsers);
+        model.addAttribute("users", page.getContent());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listUsers", listUsers);
+/*        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);*/
         model.addAttribute("title", "Tous les utilisateurs");
         model.addAttribute("path", 0);
         return "home_admin";
+    }
+    @GetMapping("")
+    public String getUserList(Model model, WebRequest request) {
+        return "redirect:/admin/page/0";
     }
 
     @GetMapping("desactivated")

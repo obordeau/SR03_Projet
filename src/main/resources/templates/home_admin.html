@@ -44,7 +44,33 @@
         <header>
             <h1><span th:text="${title}"></span></h1>
         </header>
-        <div class="table">
+        <table>
+            <tr><th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+            <tr th:each="user : ${listUsers}">
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+            </tr>
+        </table>
+        <div th:if = "${totalPages > 1}">
+            <div class = "row col-sm-10">
+                <div class = "col-sm-2">
+                    <p>Total Rows: </p><span th:text="${totalItems}"></span>
+                </div>
+                <div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(0, totalPages)}">
+                        <a th:if="${currentPage != i}" th:href="@{/admin/page/1}">tfvj</a>
+						<span th:unless="${currentPage != i}"></span>
+					</span>
+                </div>
+                <div class = "col-sm-1">
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/admin/page/' + ${currentPage + 1}}">Next</a>
+                    <span th:unless="${currentPage < totalPages}">Next</span>
+                </div>
+            </div>
+        </div>
+        <!--<div class="table">
             <table>
                 <thead class="table-header">
                 <tr>
@@ -93,7 +119,7 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
+        </div>-->
     </main>
 </div>
 </body>

@@ -1,8 +1,12 @@
 package fr.utc.sr03.chat.model;
 
 import fr.utc.sr03.chat.dao.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -84,5 +88,4 @@ public class User {
     public void setActive(Integer active) {
         this.active = active;
     }
-
 }
