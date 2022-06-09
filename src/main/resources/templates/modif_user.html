@@ -14,19 +14,19 @@
         <div class="content">
             <div class="channel">
                 <div class="fix-nav">
-                    <h4><a th:href="@{/admin/users}">TOUS LES UTILISATEURS</a></h4>
+                    <h4><a th:href="@{/admin}">TOUS LES UTILISATEURS</a></h4>
                 </div>
                 <div class="fix-nav">
-                    <h4><a th:href="@{/admin/users/add}">NOUVEL UTILISATEUR</a></h4>
+                    <h4><a th:href="@{/admin/add}">NOUVEL UTILISATEUR</a></h4>
                 </div>
                 <div class="fix-nav">
-                    <h4><a th:href="@{/admin/users/desactivated}">UTILISATEURS DÉSACTIVÉS</a></h4>
+                    <h4><a th:href="@{/admin/desactivated}">UTILISATEURS DÉSACTIVÉS</a></h4>
                 </div>
             </div>
         </div>
         <div class="sidebar-footer">
             <div class='user_infos_container'>
-                <h4><span th:text="${session.user.firstName}"></span></h4>
+                <h4><span th:text="${session.user.firstName}"></span>  <span th:text="${session.user.lastName}"></span></h4>
                 <h5><span th:text="${session.user.mail}"></span></h5>
             </div>
             <a th:href="@{/admin/modifySelf}">
@@ -39,51 +39,39 @@
     </aside>
     <main class="main">
         <header>
-            <h1>Modifier mes informations</h1>
+            <h1><span th:text="${title}"></span></h1>
         </header>
-        <form class="form-text" th:action="@{/admin/modifySelf}" th:object="${user}" method="post">
+        <form class="form-text" th:action="${path}" method="post">
             <div class="input">
-                <input type="text" class="input-field" th:value="${session.user.firstName}" id="firstName" name="firstName" required />
-                <label class="input-label" for="firstname">Prénom</label>
+                <input type="text" class="input-field" th:value="${user.firstName}" id="firstName" name="firstName" required />
+                <label class="input-label" for="firstname">Prénom *</label>
             </div>
             <div class="input">
-                <input type="text" class="input-field" th:value="${session.user.lastName}" id="lastName" name="lastName" required/>
-                <label class="input-label" for="lastname">Nom</label>
+                <input type="text" class="input-field" th:value="${user.lastName}" id="lastName" name="lastName" required/>
+                <label class="input-label" for="lastname">Nom *</label>
             </div>
             <div class="input">
-                <input type="text" class="input-field" th:value="${session.user.mail}" id="mail" name="mail" required />
-                <label class="input-label" for="mail">Email</label>
+                <input type="text" class="input-field" th:value="${user.mail}" id="mail" name="mail" required />
+                <label class="input-label" for="mail">Email *</label>
+            </div>
+            <div class="input">
+                <input type="password" class="input-field" th:value="${verification.previousPassword}" id="previousPassword" name="previousPassword" required />
+                <label class="input-label" for="previousPassword">Veuillez entrer le mot de passe de l'utilisateur *</label>
+            </div>
+            <p> Si vous souhaitez modifier le mot de passe, veuillez renseigner les champs ci-dessous.</p>
+            <div class="input">
+                <input type="password" class="input-field" th:value="${verification.newPassword}" id="newPassword" name="newPassword" />
+                <label class="input-label" for="newPassword">Nouveau mot de passe</label>
+            </div>
+            <div class="input">
+                <input type="password" class="input-field" th:value="${verification.passwordRepetition}" id="passwordRepetition" name="passwordRepetition" />
+                <label class="input-label" for="passwordRepetition">Veuillez entrer de nouveau le mot de passe</label>
             </div>
             <div class="action">
                 <button class="action-button" type="submit">Valider</button>
             </div>
         </form >
     </main>
-    <!--<main class="main">
-        <form action="#" th:action="@{/admin/modifySelf}" th:object="${user}" method="post">
-            <div class="container">
-                <h1>Ajouter un utilistaeur</h1>
-                <p>Veuillez remplir ce formulaire pour créer un nouveau profil</p>
-                <hr>
-
-                <label for="firstname">
-                    <b>Prénom</b>
-                    <input type="text" th:value="${session.user.firstName}" id="firstName" name="firstName">
-                </label>
-                <label for="lastname">
-                    <b>Nom</b>
-                    <input type="text" th:value="${session.user.lastName}" id="lastName" name="lastName">
-                </label>
-                <label for="mail">
-                    <b>Mail</b>
-                    <input type="text" th:value="${session.user.mail}" id="mail" name="mail">
-                </label>
-                <div class="clearfix">
-                    <button type="submit" class="savebtn">Enregistrer</button>
-                </div>
-            </div>
-        </form>
-    </main>-->
 </div>
 </body>
 </html>

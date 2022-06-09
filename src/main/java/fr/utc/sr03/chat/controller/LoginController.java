@@ -49,17 +49,11 @@ public class LoginController {
             if (currentUser.isAdmin() == 1) {
                 List<User> users = userRepository.findAll();
                 model.addAttribute("users", users);
+                model.addAttribute("title", "Tous les utilisateurs");
+                model.addAttribute("path", 0);
                 return "home_admin";
             } else {
                 System.out.println("L'utilisateur n'est pas admin");
-//                List<Channel> channels = channelRepository.findAll();
-//                List owners = new ArrayList<>();
-//                for (int i = 0; i < channels.size(); i++) {
-//                    owners.add(userRepository.getById((long) channels.get(i).getOwner()).getFirstName());
-//                }
-//                model.addAttribute("channels", channels);
-//                model.addAttribute("owners", owners);
-//                return "home_user";
             }
         }
         return "login";
