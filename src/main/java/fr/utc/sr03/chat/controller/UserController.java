@@ -84,11 +84,13 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/noneguest/{channel}")
     public List <User> getNoneGuest(@PathVariable Integer channel) {
+        Channel currentChannel = channelRepository.getById((long)channel);
         List<Guests> guests = guestsRepository.findByChannel(channel);
         List<User> userList = userRepository.findUsersByActiveIs(1);
         for (Guests guest : guests) {
             userList.remove(userRepository.getById(guest.getUser()));
         }
+        userList.remove(currentChannel.getOwner());
         return userList;
     }
     @CrossOrigin(origins = "http://localhost:3000")
