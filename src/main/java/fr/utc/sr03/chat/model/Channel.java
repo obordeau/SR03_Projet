@@ -13,8 +13,8 @@ public class Channel {
     private String title;
     @Column(name = "description")
     private String description;
-    @Column(name = "owner")
-    private Integer owner;
+    @ManyToOne @JoinColumn(name = "owner")
+    private User owner;
 
     public Channel() {}
 
@@ -26,7 +26,7 @@ public class Channel {
         return id;
     }
 
-    public Integer getOwner() {
+    public User getOwner() {
         return owner;
     }
 
@@ -42,7 +42,7 @@ public class Channel {
         this.id = id;
     }
 
-    public void setOwner(Integer owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 

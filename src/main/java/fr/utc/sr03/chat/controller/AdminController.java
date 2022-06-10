@@ -84,8 +84,20 @@ public class AdminController {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
                 return "redirect:/login";
         }
+        if (!currentUser.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            model.addAttribute("alerte", "Email non valide");
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("verification", verification);
+            return "add_user";
+        }
         if (!userRepository.findByMail(currentUser.getMail()).isEmpty()) {
             model.addAttribute("alerte", "Email déjà affecté.");
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("verification", verification);
+            return "add_user";
+        }
+        if (!currentUser.getPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
+            model.addAttribute("alerte", "Le mot de passe doit contenir un chiffre, une minuscule, une majuscule et au moins 8 caractères");
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             return "add_user";
