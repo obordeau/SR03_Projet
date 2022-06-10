@@ -110,10 +110,14 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/modifyuser")
-    public User modifyUser(@RequestBody User user) {
+    public Integer modifyUser(@RequestBody User user) {
+        if (!userRepository.findByMail(user.getMail()).isEmpty() && userRepository.getByMail(user.getMail()).getId() != user.getId()) {
+            return 0;
+        }
         user.setActive(1);
         user.setAdmin(0);
-        return userRepository.save(user);
+        userRepository.save(user);
+        return 1;
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/deletechannel")

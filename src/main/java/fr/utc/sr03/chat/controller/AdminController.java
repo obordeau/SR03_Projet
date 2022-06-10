@@ -84,14 +84,14 @@ public class AdminController {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
                 return "redirect:/login";
         }
-        if (!currentUser.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            model.addAttribute("alerte", "Email non valide");
+        if (!userRepository.findByMail(currentUser.getMail()).isEmpty()) {
+            model.addAttribute("alerte", "Email déjà affecté.");
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             return "add_user";
         }
-        if (!userRepository.findByMail(currentUser.getMail()).isEmpty()) {
-            model.addAttribute("alerte", "Email déjà affecté.");
+        if (!currentUser.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            model.addAttribute("alerte", "Email non valide");
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             return "add_user";
@@ -243,15 +243,31 @@ public class AdminController {
         previousDigest.update(verification.getPreviousPassword().getBytes("utf8"));
         String previousHash = String.format("%0128x", new BigInteger(1, previousDigest.digest()));
         if (!currentUser.getPassword().equals(previousHash)) {
-            model.addAttribute("user", currentUser);
+            model.addAttribute("user", user);
             model.addAttribute("path", userId);
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
             model.addAttribute("verification", verification);
             model.addAttribute("alerte", "L'ancien mot de passe ne correspond pas.");
             return "modif_user";
         }
+        if (!userRepository.findByMail(user.getMail()).isEmpty() && userRepository.getByMail(user.getMail()).getId() != userId) {
+            model.addAttribute("alerte", "Email déjà affecté.");
+            model.addAttribute("user", user);
+            model.addAttribute("verification", verification);
+            model.addAttribute("path", userId);
+            model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
+            return "modif_user";
+        }
+        if (!user.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            model.addAttribute("alerte", "Email non valide");
+            model.addAttribute("user", user);
+            model.addAttribute("verification", verification);
+            model.addAttribute("path", userId);
+            model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
+            return "modif_user";
+        }
         if (!verification.getNewPassword().equals(verification.getPasswordRepetition())) {
-            model.addAttribute("user", currentUser);
+            model.addAttribute("user", user);
             model.addAttribute("path", userId);
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
             model.addAttribute("verification", verification);
@@ -262,6 +278,14 @@ public class AdminController {
         currentUser.setLastName(user.getLastName());
         currentUser.setFirstName(user.getFirstName());
         if (verification.getNewPassword() != null && !verification.getNewPassword().isEmpty()) {
+            if (!verification.getNewPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
+                model.addAttribute("alerte", "Le mot de passe doit contenir un chiffre, une minuscule, une majuscule et au moins 8 caractères");
+                model.addAttribute("user", currentUser);
+                model.addAttribute("verification", verification);
+                model.addAttribute("path", userId);
+                model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
+                return "modif_user";
+            }
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
             digest.reset();
             digest.update(verification.getNewPassword().getBytes("utf8"));
@@ -298,15 +322,31 @@ public class AdminController {
         if (!currentUser.getPassword().equals(previousHash)) {
             model.addAttribute("path", "modifySelf");
             model.addAttribute("title", "Modifier mes informations");
-            model.addAttribute("user", currentUser);
+            model.addAttribute("user", user);
             model.addAttribute("verification", verification);
             model.addAttribute("alerte", "L'ancien mot de passe ne correspond pas.");
+            return "modif_user";
+        }
+        if (!userRepository.findByMail(user.getMail()).isEmpty() && userRepository.getByMail(user.getMail()).getId() != currentUser.getId()) {
+            model.addAttribute("alerte", "Email déjà affecté.");
+            model.addAttribute("user", user);
+            model.addAttribute("verification", verification);
+            model.addAttribute("path", "modifySelf");
+            model.addAttribute("title", "Modifier mes informations");
+            return "modif_user";
+        }
+        if (!currentUser.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            model.addAttribute("alerte", "Email non valide");
+            model.addAttribute("user", user);
+            model.addAttribute("verification", verification);
+            model.addAttribute("path", "modifySelf");
+            model.addAttribute("title", "Modifier mes informations");
             return "modif_user";
         }
         if (!verification.getNewPassword().equals(verification.getPasswordRepetition())) {
             model.addAttribute("path", "modifySelf");
             model.addAttribute("title", "Modifier mes informations");
-            model.addAttribute("user", currentUser);
+            model.addAttribute("user", user);
             model.addAttribute("verification", verification);
             model.addAttribute("alerte", "Les nouveaux mots de passe ne correspondent pas.");
             return "modif_user";
@@ -315,6 +355,14 @@ public class AdminController {
         currentUser.setLastName(user.getLastName());
         currentUser.setFirstName(user.getFirstName());
         if (verification.getNewPassword() != null && !verification.getNewPassword().isEmpty()) {
+            if (!verification.getNewPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
+                model.addAttribute("alerte", "Le mot de passe doit contenir un chiffre, une minuscule, une majuscule et au moins 8 caractères");
+                model.addAttribute("user", user);
+                model.addAttribute("verification", verification);
+                model.addAttribute("path", "modifySelf");
+                model.addAttribute("title", "Modifier mes informations");
+                return "modif_user";
+            }
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
             digest.reset();
             digest.update(verification.getNewPassword().getBytes("utf8"));
