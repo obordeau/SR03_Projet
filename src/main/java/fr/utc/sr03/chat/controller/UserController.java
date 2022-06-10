@@ -70,11 +70,13 @@ public class UserController {
         List<Guests> guests = guestsRepository.findByChannel(channel);
         List<User> userList = new ArrayList<>();
         for (Guests guest : guests) {
-            User newUser = new User();
-            newUser.setId(userRepository.getById(guest.getUser()).getId());
-            newUser.setFirstName(userRepository.getById(guest.getUser()).getFirstName());
-            newUser.setLastName(userRepository.getById(guest.getUser()).getLastName());
-            userList.add(newUser);
+            if (userRepository.getById(guest.getUser()).isActive() == 1) {
+                User newUser = new User();
+                newUser.setId(userRepository.getById(guest.getUser()).getId());
+                newUser.setFirstName(userRepository.getById(guest.getUser()).getFirstName());
+                newUser.setLastName(userRepository.getById(guest.getUser()).getLastName());
+                userList.add(newUser);
+            }
         }
         return userList;
     }
@@ -83,7 +85,7 @@ public class UserController {
     @GetMapping("/noneguest/{channel}")
     public List <User> getNoneGuest(@PathVariable Integer channel) {
         List<Guests> guests = guestsRepository.findByChannel(channel);
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userRepository.findUsersByActiveIs(1);
         for (Guests guest : guests) {
             userList.remove(userRepository.getById(guest.getUser()));
         }
