@@ -42,10 +42,10 @@
     </aside>
     <main class="main">
         <header>
-            <h1>Tous les utilisateurs</h1>
+            <h1>Utilisateurs désactivés</h1>
         </header>
-
-        <div class="table">
+        <p class="desactiv" th:if="${empty == 1}">Il n'y a pas d'utilisateurs désactivés.</p>
+        <div class="table" th:if="${empty == 0}">
             <table>
                 <thead class="table-header">
                 <tr>
@@ -67,16 +67,16 @@
                 </tr>
                 </thead>
                 <tbody class="table-content">
-                <tr height="50" class="table-row" th:each="user : ${listUsers}">
-                    <td width="30%"><span th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}"></span></td>
+                <tr height="50" class="table-row" th:each="user : ${users}">
+                    <td width="30%"><span th:text="${user.getFirstName()}"></span></td>
                     <td>
-                        <a th:href="@{/admin/active/{id}(id=${user.getId()})}">
+                        <a th:href="@{/admin/desactivated/active/{id}(id=${user.getId()})}">
                             <img width="20" height="20"
                                  th:src="${user.isActive()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
                         </a>
                     </td>
                     <td>
-                        <a th:href="@{/admin/admin/{id}(id=${user.getId()})}">
+                        <a th:href="@{/admin/desactivated/admin/{id}(id=${user.getId()})}">
                             <img width="20" height="20"
                                  th:src="${user.isAdmin()} ? @{/visuals/checked.png} : @{/visuals/cross.png}">
                         </a>
@@ -87,43 +87,13 @@
                         </a>
                     </td>
                     <td>
-                        <a th:href="@{/admin/delete/{id}(id=${user.getId()})}">
+                        <a th:href="@{/admin/desactivated/delete/{id}(id=${user.getId()})}">
                             <img width="20" height="20" th:src="@{/visuals/delete.png}">
                         </a>
                     </td>
                 </tr>
                 </tbody>
             </table>
-        </div>
-        <!--<table>
-            <tr><th>Nom</th>
-                <th>Prenom</th>
-            </tr>
-            <tr th:each="user : ${listUsers}">
-                <td th:text="${user.firstName}"></td>
-                <td th:text="${user.lastName}"></td>
-            </tr>
-        </table>-->
-        <div th:if = "${totalPages > 1}">
-            <div class = "table-footer">
-                <div class = "column-1">
-                    <p>Nombre d'utilisateurs : <span th:text="${totalItems}"></span></p>
-                </div>
-                <div class = "column-2">
-                    <p><a th:if="${currentPage > 0}" th:href="@{'/admin/' + ${currentPage - 1}}">Précédent</a>
-                        <span th:unless="${currentPage > 0 }">Précédent</span></p>
-                </div>
-                <div class = "column-3">
-					<p><span th:each="i: ${#numbers.sequence(0, totalPages -1 )}">
-                        <a th:if="${currentPage != i}" th:href="@{'/admin/' + ${i}}"><span th:text="${i + 1}"></span></a>
-						<span th:if="${currentPage == i}" th:text="${i + 1}"></span>
-                    </span></p>
-                </div>
-                <div class = "column-4">
-                    <p><a th:if="${currentPage < totalPages -1}" th:href="@{'/admin/' + ${currentPage + 1}}">Suivant</a>
-                        <span th:unless="${currentPage < totalPages-1}">Suivant</span></p>
-                </div>
-            </div>
         </div>
     </main>
 </div>

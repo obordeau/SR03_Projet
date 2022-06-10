@@ -171,6 +171,12 @@ header h1 {
     bottom: 0;
     height: 8%;
     width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.sidebar-footer img {
+    margin: 5px;
 }
 
 .user_infos_container {

@@ -44,10 +44,6 @@ public class AdminController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("listUsers", listUsers);
-/*        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);*/
-        model.addAttribute("title", "Tous les utilisateurs");
-        model.addAttribute("path", 0);
         return "home_admin";
     }
 /*
@@ -63,10 +59,13 @@ public class AdminController {
             return "redirect:/login";
         }
         List<User> users = userRepository.findUsersByActiveIs(0);
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Utilisateurs désactivés");
-        model.addAttribute("path", 1);
-        return "redirect:/admin/0";
+        if (users.isEmpty()) {
+            model.addAttribute("empty", 1);
+        } else {
+            model.addAttribute("empty", 0);
+            model.addAttribute("users", users);
+        }
+        return "home_desactivated";
     }
 
     @GetMapping("add")
@@ -105,9 +104,6 @@ public class AdminController {
         currentUser.setAdmin(0);
         currentUser.setActive(1);
         userRepository.save(currentUser);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Tous les utilisateurs");
         return "redirect:/admin/0";
     }
 
@@ -117,10 +113,6 @@ public class AdminController {
             return "redirect:/login";
         }
         userRepository.deleteUserById(userId);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Tous les utilisateurs");
-        model.addAttribute("path", 0);
         return "redirect:/admin/0";
     }
 
@@ -136,10 +128,6 @@ public class AdminController {
             currentUser.setAdmin(1);
         }
         userRepository.save(currentUser);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Tous les utilisateurs");
-        model.addAttribute("path", 0);
         return "redirect:/admin/0";
     }
 
@@ -155,10 +143,6 @@ public class AdminController {
             currentUser.setActive(1);
         }
         userRepository.save(currentUser);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Tous les utilisateurs");
-        model.addAttribute("path", 0);
         return "redirect:/admin/0";
     }
 
@@ -169,10 +153,13 @@ public class AdminController {
         }
         userRepository.deleteUserById(userId);
         List<User> users = userRepository.findUsersByActiveIs(0);
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Utilisateurs désactivés");
-        model.addAttribute("path", 1);
-        return "redirect:/admin/0";
+        if (users.isEmpty()) {
+            model.addAttribute("empty", 1);
+        } else {
+            model.addAttribute("users", users);
+            model.addAttribute("empty", 0);
+        }
+        return "home_desactivated";
     }
 
     @RequestMapping ("desactivated/admin/{userId}")
@@ -188,10 +175,13 @@ public class AdminController {
         }
         userRepository.save(currentUser);
         List<User> users = userRepository.findUsersByActiveIs(0);
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Utilisateurs désactivés");
-        model.addAttribute("path", 1);
-        return "redirect:/admin/0";
+        if (users.isEmpty()) {
+            model.addAttribute("empty", 1);
+        } else {
+            model.addAttribute("users", users);
+            model.addAttribute("empty", 0);
+        }
+        return "home_desactivated";
     }
 
     @RequestMapping ("desactivated/active/{userId}")
@@ -207,10 +197,13 @@ public class AdminController {
         }
         userRepository.save(currentUser);
         List<User> users = userRepository.findUsersByActiveIs(0);
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Utilisateurs désactivés");
-        model.addAttribute("path", 1);
-        return "redirect:/admin/0";
+        if (users.isEmpty()) {
+            model.addAttribute("empty", 1);
+        } else {
+            model.addAttribute("users", users);
+            model.addAttribute("empty", 0);
+        }
+        return "home_desactivated";
     }
 
     @RequestMapping ("modify/{userId}")
@@ -264,9 +257,6 @@ public class AdminController {
             currentUser.setPassword(hash);
         }
         userRepository.save(currentUser);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Tous les utilisateurs");
         return "redirect:/admin/0";
     }
     @GetMapping("modifySelf")
@@ -321,9 +311,6 @@ public class AdminController {
         }
         request.setAttribute("user", currentUser, WebRequest.SCOPE_SESSION);
         userRepository.save(currentUser);
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        model.addAttribute("title", "Tous les utilisateurs");
         return "redirect:/admin/0";
     }
 
