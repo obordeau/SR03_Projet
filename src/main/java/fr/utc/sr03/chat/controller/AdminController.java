@@ -1,8 +1,10 @@
 package fr.utc.sr03.chat.controller;
 
 import fr.utc.sr03.chat.UserService;
+import fr.utc.sr03.chat.dao.AttemptsRepository;
 import fr.utc.sr03.chat.dao.UserPaging;
 import fr.utc.sr03.chat.dao.UserRepository;
+import fr.utc.sr03.chat.model.Attempts;
 import fr.utc.sr03.chat.model.PasswordVerification;
 import fr.utc.sr03.chat.model.User;
 import jdk.jfr.Frequency;
@@ -30,6 +32,8 @@ public class AdminController {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AttemptsRepository attemptsRepository;
 
     @GetMapping("{pageNo}")
     public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model, WebRequest request) {
@@ -224,6 +228,8 @@ public class AdminController {
             return "redirect:/login";
         }
         User currentUser = userRepository.getById(userId);
+        Attempts att = attemptsRepository.findFirstByUser(currentUser);
+        model.addAttribute("blocked", att.getAccount_blocked());
         model.addAttribute("user", currentUser);
         model.addAttribute("path", userId);
         model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
@@ -277,6 +283,10 @@ public class AdminController {
         currentUser.setMail(user.getMail());
         currentUser.setLastName(user.getLastName());
         currentUser.setFirstName(user.getFirstName());
+        Attempts att = attemptsRepository.findFirstByUser(currentUser);
+        att.setAccount_blocked(0);
+        att.setNumber_attempts(0);
+        attemptsRepository.save(att);
         if (verification.getNewPassword() != null && !verification.getNewPassword().isEmpty()) {
             if (!verification.getNewPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
                 model.addAttribute("alerte", "Le mot de passe doit contenir un chiffre, une minuscule, une majuscule et au moins 8 caractères");
@@ -306,6 +316,7 @@ public class AdminController {
         model.addAttribute("user", (User)request.getAttribute("user", WebRequest.SCOPE_SESSION));
         model.addAttribute("verification", new PasswordVerification());
         model.addAttribute("alerte", "");
+        model.addAttribute("blocked", 0);
         return "modif_user";
     }
 

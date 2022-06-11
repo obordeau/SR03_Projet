@@ -1,6 +1,7 @@
 package fr.utc.sr03.chat.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.utc.sr03.chat.dao.AttemptsRepository;
 import fr.utc.sr03.chat.dao.ChannelRepository;
 import fr.utc.sr03.chat.dao.GuestsRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
@@ -38,6 +39,8 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private GuestsRepository guestsRepository;
+    @Autowired
+    private AttemptsRepository attemptsRepository;
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/allchannels/{id}")
     public List <Channel> getChannels(@PathVariable Integer id) {
@@ -142,12 +145,25 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/loguser")
     public User logUser(@RequestBody User user) {
-        User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
-        if (currentUser == null || currentUser.isActive() == 0 || currentUser.isAdmin() == 1) {
-            User nulluser = new User();
-            return nulluser;
+        User userTest = userRepository.getByMail(user.getMail());
+        Attempts att = attemptsRepository.findFirstByUser(userTest);
+        if (att.getAccount_blocked() == 0) {
+            att.setNumber_attempts(att.getNumber_attempts() + 1);
+            attemptsRepository.save(att);
+            if (att.getNumber_attempts() < 5) {
+                User currentUser = userRepository.getByMailAndPassword(user.getMail(), user.getPassword());
+                if (currentUser == null || currentUser.isActive() == 0 || currentUser.isAdmin() == 1) {
+                    User nulluser = new User();
+                    return nulluser;
+                }
+                return currentUser;
+            } else {
+                att.setAccount_blocked(1);
+                attemptsRepository.save(att);
+            }
         }
-        return currentUser;
+        User nulluser = new User();
+        return nulluser;
     }
 
     @MessageMapping("/chat/{channel}")

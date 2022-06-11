@@ -54,6 +54,7 @@
                 <input type="text" class="input-field" th:value="${user.mail}" id="mail" name="mail" required />
                 <label class="input-label" for="mail">Email *</label>
             </div>
+            <p th:if="${blocked == 1}">L'utilisateur est bloqué, veuillez renseigner son mot de passe pour le débloquer.</p>
             <div class="input">
                 <input type="password" class="input-field" th:value="${verification.previousPassword}" id="previousPassword" name="previousPassword" required />
                 <label class="input-label" for="previousPassword">Veuillez entrer le mot de passe de l'utilisateur *</label>
