@@ -62,12 +62,6 @@ public class UserController {
         return channelRepository.findByOwner(userRepository.findById(id));
     }
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/getusers")
-    public List <User> getUsers() {
-        return userRepository.findAll();
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/guests/{channel}")
     public List <User> getGuests(@PathVariable Integer channel) {
         List<Guests> guests = guestsRepository.findByChannel(channel);
@@ -156,6 +150,8 @@ public class UserController {
                     User nulluser = new User();
                     return nulluser;
                 }
+                att.setNumber_attempts(0);
+                attemptsRepository.save(att);
                 return currentUser;
             } else {
                 att.setAccount_blocked(1);
