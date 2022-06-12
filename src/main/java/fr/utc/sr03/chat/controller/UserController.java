@@ -6,28 +6,12 @@ import fr.utc.sr03.chat.dao.ChannelRepository;
 import fr.utc.sr03.chat.dao.GuestsRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.*;
-import org.attoparser.dom.INestableNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.DigestUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
-
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-//import java.util.Date;
-
-import javax.security.auth.callback.CallbackHandler;
-import javax.swing.event.ChangeEvent;
-import java.util.ArrayList;
-import java.sql.Date;
 
 import java.util.List;
 
@@ -182,11 +166,12 @@ public class UserController {
         return nulluser;
     }
 
-    @MessageMapping("/chat/{channel}")
-    @SendTo("/topic/messages/{channel}")
-    public OutputMessage send(Message message) throws Exception {
-        String time = new SimpleDateFormat("HH:mm").format(new java.util.Date());
-        return new OutputMessage(message.getFrom(), message.getText(), time);
+    /* traitement des messages de chat à travers les WebSockets */
+    @MessageMapping("/chat/{channel}") // destination des messages lors de l'envoi
+    @SendTo("/topic/messages/{channel}") // redirection des messages vers le topic associé au bon channel
+    public OutputMessage send(Message message) throws Exception { // récupération d'un object Message
+        String time = new SimpleDateFormat("HH:mm").format(new java.util.Date()); // ajout d'un champ heure correspondant à l'heure courante
+        return new OutputMessage(message.getFrom(), message.getText(), time); // retour d'un objet OuputMessage
     }
 
 }

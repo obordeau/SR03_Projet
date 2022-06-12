@@ -4,12 +4,10 @@ import fr.utc.sr03.chat.dao.AttemptsRepository;
 import fr.utc.sr03.chat.dao.ChannelRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.Attempts;
-import fr.utc.sr03.chat.model.Channel;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -17,10 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.regex.*;
-import java.util.*;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("login")

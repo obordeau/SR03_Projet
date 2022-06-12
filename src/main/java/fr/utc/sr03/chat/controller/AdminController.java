@@ -2,28 +2,21 @@ package fr.utc.sr03.chat.controller;
 
 import fr.utc.sr03.chat.UserService;
 import fr.utc.sr03.chat.dao.AttemptsRepository;
-import fr.utc.sr03.chat.dao.UserPaging;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.model.Attempts;
 import fr.utc.sr03.chat.model.PasswordVerification;
 import fr.utc.sr03.chat.model.User;
-import jdk.jfr.Frequency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-
-import java.io.SyncFailedException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("admin")

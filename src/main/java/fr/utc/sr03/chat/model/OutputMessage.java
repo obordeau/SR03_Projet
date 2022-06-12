@@ -1,6 +1,7 @@
 package fr.utc.sr03.chat.model;
 
-public class OutputMessage extends Message{
+/* extension de la calsse message avec un champs time en plus */
+public class OutputMessage extends Message {
     private String time;
 
     public OutputMessage(String from, String text, String time) {

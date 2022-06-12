@@ -1,5 +1,6 @@
 package fr.utc.sr03.chat.model;
 
+/* cette classe permettra de support au messages transmis via les WebSockets */
 public class Message {
 
     private String from;
