@@ -35,13 +35,15 @@ public class AdminController {
     @Autowired
     private AttemptsRepository attemptsRepository;
 
+    /* Pagination des utilisateurs */
     @GetMapping("{pageNo}")
     public String findPaginated(@PathVariable (value = "pageNo") int pageNo, Model model, WebRequest request) {
+        // redirection vers login si aucun utilisateur n'est connecté
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
             return "redirect:/login";
         }
-        int pageSize = 5;
-        Page<User> page = userService.findPaginated(pageNo, pageSize);
+        int pageSize = 5; // nombre d'utilisateurs sur une page
+        Page<User> page = userService.findPaginated(pageNo, pageSize); // trouve les bons utilisateurs correspondant à la page associée à pageNo
         List<User> listUsers = page.getContent();
         model.addAttribute("users", page.getContent());
         model.addAttribute("currentPage", pageNo);
@@ -50,13 +52,8 @@ public class AdminController {
         model.addAttribute("listUsers", listUsers);
         return "home_admin";
     }
-/*
-    @GetMapping("")
-    public String getUserList(Model model, WebRequest request) {
-        return "redirect:/admin/page/0";
-    }
-*/
 
+    /* Retourne les utilisateurs désactivés */
     @GetMapping("desactivated")
     public String getDesactivatedUsers(Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -72,6 +69,7 @@ public class AdminController {
         return "home_desactivated";
     }
 
+    /* Ajout d'un nouvel utilisateur */
     @GetMapping("add")
     public String getUserForm(Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -83,35 +81,37 @@ public class AdminController {
         return "add_user";
     }
 
+    /* Ajout d'un nouvel utilisateur */
     @PostMapping("add")
     public String addUser(@ModelAttribute User currentUser, @ModelAttribute PasswordVerification verification, Model model, WebRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
                 return "redirect:/login";
         }
-        if (!userRepository.findByMail(currentUser.getMail()).isEmpty()) {
+        if (!userRepository.findByMail(currentUser.getMail()).isEmpty()) { // verification si l'email n'est pas déjà affecté
             model.addAttribute("alerte", "Email déjà affecté.");
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             return "add_user";
         }
-        if (!currentUser.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        if (!currentUser.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) { // verification si le mail correspond bien au bon format -@-.-
             model.addAttribute("alerte", "Email non valide");
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             return "add_user";
         }
-        if (!currentUser.getPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
+        if (!currentUser.getPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) { // verification si le mot de passe contient bien un chiffre, une majuscule, une minuscule et au moins 8 caractères
             model.addAttribute("alerte", "Le mot de passe doit contenir un chiffre, une minuscule, une majuscule et au moins 8 caractères");
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             return "add_user";
         }
-        if (!currentUser.getPassword().equals(verification.getPasswordRepetition())) {
+        if (!currentUser.getPassword().equals(verification.getPasswordRepetition())) { // vérification si les deux mots de passes sont identiques
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("verification", verification);
             model.addAttribute("alerte", "Les mots de passe ne sont pas les mêmes.");
             return "add_user";
         }
+        // hashage du mot de passe
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
         digest.reset();
         digest.update(currentUser.getPassword().getBytes("utf8"));
@@ -120,9 +120,15 @@ public class AdminController {
         currentUser.setAdmin(0);
         currentUser.setActive(1);
         userRepository.save(currentUser);
+        Attempts att = new Attempts(); // création d'un nouveau tuple de tentatives de connexion associé à cet utilisateur
+        att.setAccount_blocked(0);
+        att.setNumber_attempts(0);
+        att.setUser(currentUser);
+        attemptsRepository.save(att);
         return "redirect:/admin/0";
     }
 
+    /* Suppression de l'utilisateur associé à userId */
     @RequestMapping ("delete/{userId}")
     public String deleteUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -132,6 +138,7 @@ public class AdminController {
         return "redirect:/admin/0";
     }
 
+    /* Utilisateur associé à userId devient admin ou n'est plus admin */
     @RequestMapping ("admin/{userId}")
     public String adminUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -147,6 +154,7 @@ public class AdminController {
         return "redirect:/admin/0";
     }
 
+    /* Utilisateur associé à user Id devient actif ou desactif */
     @RequestMapping ("active/{userId}")
     public String activeUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -162,6 +170,7 @@ public class AdminController {
         return "redirect:/admin/0";
     }
 
+    /* Suppression de l'utilisateur desactivé associé à userId */
     @RequestMapping ("desactivated/delete/{userId}")
     public String deleteDesactivatedUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -178,6 +187,7 @@ public class AdminController {
         return "home_desactivated";
     }
 
+    /* Utilisateur désactivé associé à userId devient admin ou n'est plus admin */
     @RequestMapping ("desactivated/admin/{userId}")
     public String adminDesactivatedUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -200,6 +210,7 @@ public class AdminController {
         return "home_desactivated";
     }
 
+    /* Activation d'un utilisateur désactivé associé à userId */
     @RequestMapping ("desactivated/active/{userId}")
     public String activeDesactivatedUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -222,6 +233,7 @@ public class AdminController {
         return "home_desactivated";
     }
 
+    /* Modification de l'utilisateur associé à userId */
     @RequestMapping ("modify/{userId}")
     public String getUser(@PathVariable long userId, Model model, WebRequest request) {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -238,6 +250,7 @@ public class AdminController {
         return "modif_user";
     }
 
+    /* Modification de l'utilisateur associé à userId */
     @PostMapping ("modify/{userId}")
     public String modifyUser(@PathVariable long userId, @ModelAttribute User user, @ModelAttribute PasswordVerification verification, Model model, WebRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
@@ -248,7 +261,7 @@ public class AdminController {
         previousDigest.reset();
         previousDigest.update(verification.getPreviousPassword().getBytes("utf8"));
         String previousHash = String.format("%0128x", new BigInteger(1, previousDigest.digest()));
-        if (!currentUser.getPassword().equals(previousHash)) {
+        if (!currentUser.getPassword().equals(previousHash)) { // verification que le mot de passe entré correspond bien au sien
             model.addAttribute("user", user);
             model.addAttribute("path", userId);
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
@@ -256,7 +269,7 @@ public class AdminController {
             model.addAttribute("alerte", "L'ancien mot de passe ne correspond pas.");
             return "modif_user";
         }
-        if (!userRepository.findByMail(user.getMail()).isEmpty() && userRepository.getByMail(user.getMail()).getId() != userId) {
+        if (!userRepository.findByMail(user.getMail()).isEmpty() && userRepository.getByMail(user.getMail()).getId() != userId) { // vérification que l'email n'est pas déjà attribué
             model.addAttribute("alerte", "Email déjà affecté.");
             model.addAttribute("user", user);
             model.addAttribute("verification", verification);
@@ -264,7 +277,7 @@ public class AdminController {
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
             return "modif_user";
         }
-        if (!user.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        if (!user.getMail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) { // vérification que le mail correspond bien au format d'un mail
             model.addAttribute("alerte", "Email non valide");
             model.addAttribute("user", user);
             model.addAttribute("verification", verification);
@@ -272,7 +285,7 @@ public class AdminController {
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
             return "modif_user";
         }
-        if (!verification.getNewPassword().equals(verification.getPasswordRepetition())) {
+        if (!verification.getNewPassword().equals(verification.getPasswordRepetition())) { // vérification que les deux nouveaux mots de passes sont identiques (vides ou non)
             model.addAttribute("user", user);
             model.addAttribute("path", userId);
             model.addAttribute("title", "Modifier l'utilisateur : " + currentUser.getFirstName() + " " + currentUser.getLastName());
@@ -283,11 +296,11 @@ public class AdminController {
         currentUser.setMail(user.getMail());
         currentUser.setLastName(user.getLastName());
         currentUser.setFirstName(user.getFirstName());
-        Attempts att = attemptsRepository.findFirstByUser(currentUser);
+        Attempts att = attemptsRepository.findFirstByUser(currentUser); // déblocage du compte car l'administrateur vient de rentrer le mot de passe
         att.setAccount_blocked(0);
         att.setNumber_attempts(0);
         attemptsRepository.save(att);
-        if (verification.getNewPassword() != null && !verification.getNewPassword().isEmpty()) {
+        if (verification.getNewPassword() != null && !verification.getNewPassword().isEmpty()) { // vérification si l'utilisateur veut changer son mot de passe
             if (!verification.getNewPassword().matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
                 model.addAttribute("alerte", "Le mot de passe doit contenir un chiffre, une minuscule, une majuscule et au moins 8 caractères");
                 model.addAttribute("user", currentUser);
@@ -305,6 +318,8 @@ public class AdminController {
         userRepository.save(currentUser);
         return "redirect:/admin/0";
     }
+
+    /* Modification des informations de l'utilisateur connecté */
     @GetMapping("modifySelf")
     public String getUserInformation(Model model, WebRequest request)
     {
@@ -320,12 +335,14 @@ public class AdminController {
         return "modif_user";
     }
 
+    /* Modification des informations de l'utilisateur connecté */
     @PostMapping("modifySelf")
     public String modifyUserInformation(@ModelAttribute User user, @ModelAttribute PasswordVerification verification, Model model, WebRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         if (request.getAttribute("connected", WebRequest.SCOPE_SESSION) == null || request.getAttribute("connected", WebRequest.SCOPE_SESSION).equals(false)) {
             return "redirect:/login";
         }
-        User currentUser = (User)request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        User currentUser = (User)request.getAttribute("user", WebRequest.SCOPE_SESSION); // récupération de l'utilisateur connecté
+        // hashage du mot de passe
         MessageDigest previousDigest = MessageDigest.getInstance("SHA-512");
         previousDigest.reset();
         previousDigest.update(verification.getPreviousPassword().getBytes("utf8"));
@@ -388,8 +405,8 @@ public class AdminController {
     @GetMapping("deconnect")
     public String deconnexion(WebRequest request, Model model)
     {
-        request.setAttribute("connected", false, WebRequest.SCOPE_SESSION);
-        request.removeAttribute("user", WebRequest.SCOPE_SESSION);
+        request.setAttribute("connected", false, WebRequest.SCOPE_SESSION); // l'utilisateur n'est plus connecté
+        request.removeAttribute("user", WebRequest.SCOPE_SESSION); // suppression de l'utilisateur dans la session
         return "redirect:/login";
     }
 }

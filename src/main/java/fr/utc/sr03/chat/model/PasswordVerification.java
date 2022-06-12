@@ -1,5 +1,6 @@
 package fr.utc.sr03.chat.model;
 
+/* Classe pour la vérification des mots de passe dans les formulaires */
 public class PasswordVerification {
     private String passwordRepetition;
 

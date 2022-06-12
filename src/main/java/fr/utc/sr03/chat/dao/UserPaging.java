@@ -8,5 +8,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface UserPaging extends PagingAndSortingRepository<User, Long> {
-    Page<User> findUsersByActiveIs(int value, Pageable pageable);
 }
